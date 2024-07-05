@@ -1,0 +1,21 @@
+.container {
+  box-shadow: 2px 5px 5px gray;
+  padding: 10px;
+}
+
+.todoHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.btnsContainer {
+  padding: 10px 0;
+  display: flex;
+  gap: 5px;
+}
