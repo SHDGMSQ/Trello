@@ -14,11 +14,11 @@ export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
     use: ['@svgr/webpack'],
   };
 
-
   const assetLoader = {
     test: /\.(png|jpg|jpeg|gif)$/i,
     type: "asset/resource"
   };
+
 
 
   const cssLoaderWithModules = {
@@ -31,6 +31,13 @@ export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
     }
   };
 
+  const cssLoader = {
+    test: /\.css$/i,
+    use: [
+      isProd ? MiniCssExtractPlugin.loader : "style-loader",
+      cssLoaderWithModules
+    ]
+  };
 
   const scssLoader = {
     test: /\.s[ac]ss$/i,
@@ -56,6 +63,5 @@ export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
     exclude: /node_modules/,
   };
 
-
-  return [tsLoader, scssLoader, assetLoader, svgLoader];
+  return [tsLoader, scssLoader, assetLoader, svgLoader, cssLoader];
 };
