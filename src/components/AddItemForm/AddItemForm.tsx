@@ -1,31 +1,49 @@
-import {ChangeEvent, memo, useState} from "react";
+import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {AddItemFormPropsType} from "@/components/AddItemForm/types";
 import styles from "./AddItemForm.module.scss";
 
-//todo доработать компонент, валидация и т.п.
-export const AddItemForm =memo((props: AddItemFormPropsType) => {
+export const AddItemForm = memo((props: AddItemFormPropsType) => {
   const {addItem} = props;
 
-  const [value, setValue] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [error, setError] = useState<null | string>(null);
 
-  console.log("render");
-
-  const onChangeValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.currentTarget.value);
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (error) {
+      setError(null);
+    }
+    if (!title && !e.currentTarget.value.trim()) {
+      return;
+    } else {
+      setTitle(e.currentTarget.value);
+    }
   };
 
-  const onClickButtonHandler = () => {
-    addItem(value);
+  const addItemHandler = () => {
+    if (title === "") {
+      setError("Field is required!");
+    } else {
+      addItem(title.trim());
+      setTitle("");
+    }
+  };
+
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      addItemHandler();
+    }
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <input
         type="text"
-        onChange={onChangeValueHandler}
-        value={value}
+        onChange={onChangeInput}
+        value={title}
+        onKeyPress={onKeyPressHandler}
       />
-      <button onClick={onClickButtonHandler}>+</button>
+      <button onClick={addItemHandler}>+</button>
+      <div className={`${error ? styles.error : styles.hiddenError}`}>{error}</div>
     </div>
   );
-}) ;
+});
