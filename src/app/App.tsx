@@ -1,7 +1,7 @@
 import styles from "./App.module.scss";
 import {v4 as uuidv4} from "uuid";
 import {Todolist} from "@/components/Todolist/Todolist";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {TodolistType} from "@/components/Todolist/types";
 import {TasksType} from "@/components/Task/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
@@ -28,11 +28,11 @@ export const App = () => {
     ]
   });
 
-  const addTodolist = (title: string) => {
+  const addTodolist = useCallback((title: string) => {
     const todoId = uuidv4();
     setTodolists([{id: todoId, title}, ...todolists]);
     setTasks({...tasks, [todoId]: []});
-  };
+  }, [todolists, tasks]);
 
   const removeTodolist = () => {
 
