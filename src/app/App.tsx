@@ -2,7 +2,7 @@ import styles from "./App.module.scss";
 import {v4 as uuidv4} from "uuid";
 import {Todolist} from "@/components/Todolist/Todolist";
 import {useCallback, useState} from "react";
-import {TodolistType} from "@/components/Todolist/types";
+import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {TasksType} from "@/components/Task/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
 
@@ -11,8 +11,8 @@ export const App = () => {
   const todoId2 = uuidv4();
 
   const [todolists, setTodolists] = useState<Array<TodolistType>>([
-    {id: todoId1, title: "First"},
-    {id: todoId2, title: "Second"},
+    {id: todoId1, title: "First", filter: "All"},
+    {id: todoId2, title: "Second", filter: "Active"},
   ]);
 
   const [tasks, setTasks] = useState<TasksType>({
@@ -23,21 +23,36 @@ export const App = () => {
     ],
     [todoId2]: [
       {id: uuidv4(), title: "first task2", isDone: false,},
-      {id: uuidv4(), title: "second task2", isDone: false,},
+      {id: uuidv4(), title: "second task2", isDone: true,},
       {id: uuidv4(), title: "third task2", isDone: false,},
     ]
   });
 
   const addTodolist = useCallback((title: string) => {
     const todoId = uuidv4();
-    setTodolists([{id: todoId, title}, ...todolists]);
+    setTodolists([{id: todoId, title, filter: "All"}, ...todolists]);
     setTasks({...tasks, [todoId]: []});
   }, [todolists, tasks]);
 
-  const removeTodolist = () => {
+  const removeTodolist = useCallback((id: string) => {
+    setTodolists(todolists.filter((tl) => tl.id !== id));
+  }, [todolists]);
 
-  };
+  const addTask = useCallback((todoId: string, title: string) => {
+    setTasks({...tasks, [todoId]: [{id: uuidv4(), title, isDone: false}, ...tasks[todoId]]});
+  }, [tasks]);
 
+  const changeTaskStatus = useCallback((todoId: string, taskId: string, status: boolean) => {
+    setTasks({...tasks, [todoId]: tasks[todoId].map((task) => task.id === taskId ? {...task, isDone: status} : task)});
+  }, [tasks]);
+
+  const changeTasks = useCallback((todoId: string, value: FilterValuesType) => {
+    setTodolists(todolists.map((todo) => todo.id === todoId ? {...todo, filter: value} : todo));
+  }, [todolists]);
+
+  const removeTask = useCallback((todoId: string, taskId: string) => {
+    setTasks({...tasks, [todoId]: tasks[todoId].filter((task) => task.id !== taskId)});
+  }, [tasks]);
 
   return (
     <div className={styles.container}>
@@ -50,6 +65,12 @@ export const App = () => {
               key={tl.id}
               title={tl.title}
               tasks={tasks[tl.id]}
+              removeTodolist={removeTodolist}
+              addTask={addTask}
+              changeTaskStatus={changeTaskStatus}
+              changeTasks={changeTasks}
+              filter={tl.filter}
+              removeTask={removeTask}
             />
           )
         }
