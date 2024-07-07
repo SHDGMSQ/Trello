@@ -1,3 +1,3 @@
-export interface AddItemFormPropsType {
+export type AddItemFormPropsType =  {
   addItem: (title: string) => void
 }
