@@ -1,15 +1,15 @@
-export interface TasksType {
+export type TasksType = {
   [key: string]: Array<TaskType>;
 }
 
-export interface TaskType {
+export type TaskType = {
   id: string;
   title: string;
   isDone: boolean;
 
 }
 
-export interface TaskPropsType {
+export type TaskPropsType = {
   title: string;
   isDone: boolean;
   id: string;

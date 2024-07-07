@@ -1,6 +1,6 @@
 import {TaskType} from "@/components/Task/types";
 
-export interface TodolistPropsType {
+export type TodolistPropsType = {
   id: string;
   title: string;
   tasks: Array<TaskType>;
@@ -12,7 +12,7 @@ export interface TodolistPropsType {
   removeTask: (todoId: string, taskId: string) => void;
 }
 
-export interface TodolistType {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterValuesType
