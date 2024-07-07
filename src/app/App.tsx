@@ -54,6 +54,14 @@ export const App = () => {
     setTasks({...tasks, [todoId]: tasks[todoId].filter((task) => task.id !== taskId)});
   }, [tasks]);
 
+  const changeTaskTitle = useCallback ((todoId: string, taskId: string, title: string) => {
+    setTasks({...tasks, [todoId]: tasks[todoId].map((task) => task.id === taskId ? {...task, title} : task)});
+  }, [tasks]);
+
+  const changeTodoTitle =useCallback( (id: string, title: string) => {
+    setTodolists(todolists.map((tl) => tl.id === id ? {...tl, title}: tl));
+  }, [todolists]);
+
   return (
     <div className={styles.container}>
       <AddItemForm addItem={addTodolist}/>
@@ -71,6 +79,8 @@ export const App = () => {
               changeTasks={changeTasks}
               filter={tl.filter}
               removeTask={removeTask}
+              changeTaskTitle={changeTaskTitle}
+              changeTodoTitle={changeTodoTitle}
             />
           )
         }
