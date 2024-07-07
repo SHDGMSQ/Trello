@@ -15,7 +15,9 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
 
   const offEditMode = useCallback (() => {
     setIsEditMode(false);
-    changeTitle(inputTitle);
+    if (inputTitle.trim()) {
+      changeTitle(inputTitle);
+    }
   }, [changeTitle, inputTitle]);
 
   const onChangeTitleValue = (e: ChangeEvent<HTMLInputElement>) => {
