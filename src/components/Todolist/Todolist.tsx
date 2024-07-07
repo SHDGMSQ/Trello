@@ -3,9 +3,10 @@ import {Task} from "@/components/Task/Task";
 import styles from "./Todolist.module.scss";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
+import {EditableSpan} from "@/components/EditableSpan/EditableSpan";
 
 export const Todolist = memo((props: TodolistPropsType) => {
-  const {id, title, tasks, removeTodolist, addTask, changeTaskStatus, changeTasks, filter, removeTask} = props;
+  const {id, title, tasks, removeTodolist, addTask, changeTaskStatus, changeTasks, filter, removeTask, changeTaskTitle, changeTodoTitle} = props;
 
   const removeTodolistHandler = useCallback(() => {
     removeTodolist(id);
@@ -14,6 +15,14 @@ export const Todolist = memo((props: TodolistPropsType) => {
   const addTaskHandler = useCallback((title: string) => {
     addTask(id, title);
   }, [addTask, id]);
+
+  const changeTaskTitleHandler = useCallback( (taskId: string, title: string) => {
+    changeTaskTitle(id, taskId, title);
+  }, [changeTaskTitle, id]);
+
+  const changeTodolistTitleHandler = useCallback((title: string) => {
+    changeTodoTitle(id, title);
+  }, [changeTodoTitle, id, title]);
 
   const onAllClickHandler = useCallback(() => {
     changeTasks(id, "All");
@@ -38,7 +47,9 @@ export const Todolist = memo((props: TodolistPropsType) => {
   return (
     <div className={styles.container}>
       <div className={styles.todoHeader}>
-        <h3>{title}</h3>
+        <h3>
+          <EditableSpan title={title} changeTitle={changeTodolistTitleHandler} />
+        </h3>
         <button onClick={removeTodolistHandler}>x</button>
       </div>
       <AddItemForm addItem={addTaskHandler}/>
@@ -52,6 +63,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
             isDone={task.isDone}
             changeTaskStatus={changeTaskStatus}
             removeTask={removeTask}
+            changeTaskTitle={changeTaskTitleHandler}
           />
         )
       }
