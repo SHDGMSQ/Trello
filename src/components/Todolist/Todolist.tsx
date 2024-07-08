@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
 export const Todolist = memo((props: TodolistPropsType) => {
-  const {id, title, tasks, removeTodolist, addTask, changeTaskStatus, changeTasks, filter, removeTask, changeTaskTitle, changeTodoTitle} = props;
+  const {id, title, tasks, removeTodolist, addTask, changeTaskStatus, changeFilter, filter, removeTask, changeTaskTitle, changeTodoTitle} = props;
 
   const removeTodolistHandler = useCallback(() => {
     removeTodolist(id);
@@ -29,14 +29,14 @@ export const Todolist = memo((props: TodolistPropsType) => {
   }, [changeTodoTitle, id, title]);
 
   const onAllClickHandler = useCallback(() => {
-    changeTasks(id, "All");
-  }, [changeTasks, id]);
+    changeFilter(id, "All");
+  }, [changeFilter, id]);
   const onActiveClickHandler = useCallback(() => {
-    changeTasks(id, "Active");
-  }, [changeTasks, id]);
+    changeFilter(id, "Active");
+  }, [changeFilter, id]);
   const onCompletedClickHandler = useCallback(() => {
-    changeTasks(id, "Completed");
-  }, [changeTasks, id]);
+    changeFilter(id, "Completed");
+  }, [changeFilter, id]);
 
   let tasksForTodolist = tasks;
 
