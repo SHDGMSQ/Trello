@@ -6,20 +6,19 @@
 .todoHeader {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 10px;
 }
-
+//
 h3 {
   margin: 0;
   padding: 0;
 }
-
+//
 .btnsContainer {
-  padding: 10px 0;
-  display: flex;
-  gap: 5px;
+  margin-top: 10px;
 }
-
-.chosenButton {
-  background-color: aqua;
-}
+//
+//.chosenButton {
+//  background-color: aqua;
+//}

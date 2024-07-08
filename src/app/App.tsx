@@ -5,6 +5,7 @@ import {useCallback, useState} from "react";
 import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {TasksType} from "@/components/Task/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
+import {Box, Grid, Paper} from "@mui/material";
 
 export const App = () => {
   const todoId1 = uuidv4();
@@ -12,7 +13,7 @@ export const App = () => {
 
   const [todolists, setTodolists] = useState<Array<TodolistType>>([
     {id: todoId1, title: "First", filter: "All"},
-    {id: todoId2, title: "Second", filter: "Active"},
+    {id: todoId2, title: "Second", filter: "All"},
   ]);
 
   const [tasks, setTasks] = useState<TasksType>({
@@ -54,37 +55,44 @@ export const App = () => {
     setTasks({...tasks, [todoId]: tasks[todoId].filter((task) => task.id !== taskId)});
   }, [tasks]);
 
-  const changeTaskTitle = useCallback ((todoId: string, taskId: string, title: string) => {
+  const changeTaskTitle = useCallback((todoId: string, taskId: string, title: string) => {
     setTasks({...tasks, [todoId]: tasks[todoId].map((task) => task.id === taskId ? {...task, title} : task)});
   }, [tasks]);
 
-  const changeTodoTitle =useCallback( (id: string, title: string) => {
-    setTodolists(todolists.map((tl) => tl.id === id ? {...tl, title}: tl));
+  const changeTodoTitle = useCallback((id: string, title: string) => {
+    setTodolists(todolists.map((tl) => tl.id === id ? {...tl, title} : tl));
   }, [todolists]);
 
   return (
-    <div className={styles.container}>
-      <AddItemForm addItem={addTodolist}/>
+    <Box>
+      <Grid container padding={2}>
+        <AddItemForm addItem={addTodolist}/>
+      </Grid>
       <div className={styles.todolists}>
-        {
-          todolists.map((tl) =>
-            <Todolist
-              id={tl.id}
-              key={tl.id}
-              title={tl.title}
-              tasks={tasks[tl.id]}
-              removeTodolist={removeTodolist}
-              addTask={addTask}
-              changeTaskStatus={changeTaskStatus}
-              changeTasks={changeTasks}
-              filter={tl.filter}
-              removeTask={removeTask}
-              changeTaskTitle={changeTaskTitle}
-              changeTodoTitle={changeTodoTitle}
-            />
-          )
-        }
+        <Grid container spacing={4} padding={2}>
+          {
+            todolists.map((tl) =>
+              <Grid key={tl.id} item>
+                <Paper elevation={3}>
+                  <Todolist
+                    id={tl.id}
+                    title={tl.title}
+                    tasks={tasks[tl.id]}
+                    removeTodolist={removeTodolist}
+                    addTask={addTask}
+                    changeTaskStatus={changeTaskStatus}
+                    changeTasks={changeTasks}
+                    filter={tl.filter}
+                    removeTask={removeTask}
+                    changeTaskTitle={changeTaskTitle}
+                    changeTodoTitle={changeTodoTitle}
+                  />
+                </Paper>
+              </Grid>
+            )
+          }
+        </Grid>
       </div>
-    </div>
+    </Box>
   );
 };
