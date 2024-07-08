@@ -8,40 +8,37 @@ import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "@/store/store";
-import {TasksType} from "@/components/Task/types";
+import {useDispatch} from "react-redux";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "@/store/reducers/taskReducer";
 
 export const Todolist = memo((props: TodolistPropsType) => {
-  const {id, title, filter, removeTodolist, changeFilter, changeTodoTitle} = props;
+  const {id, title, filter, tasks, removeTodolist, changeFilter, changeTodoTitle} = props;
 
   const dispatch = useDispatch();
-  const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks)[id];
 
   const removeTodolistHandler = useCallback(() => {
     removeTodolist(id);
   }, [removeTodolist, id]);
 
-  const addTask = useCallback((todoId: string, title: string) => {
-    dispatch(addTaskAC(todoId, title));
-  }, [dispatch, addTaskAC]);
-
   const changeTodolistTitleHandler = useCallback((title: string) => {
     changeTodoTitle(id, title);
-  }, [changeTodoTitle, id, title]);
+  }, [changeTodoTitle, id]);
 
   const changeTaskStatus = useCallback((todoId: string, taskId: string, status: boolean) => {
     dispatch(changeTaskStatusAC(todoId, taskId, status));
-  }, [dispatch, changeTaskStatusAC]);
+  }, [dispatch]);
 
   const removeTask = useCallback((todoId: string, taskId: string) => {
     dispatch(removeTaskAC(todoId, taskId));
-  }, [dispatch, removeTaskAC]);
+  }, [dispatch]);
 
-  const changeTaskTitle = useCallback((todoId: string, taskId: string, title: string) => {
-    dispatch(changeTaskTitleAC(todoId, taskId, title));
-  }, [dispatch, changeTaskTitleAC]);
+  const changeTaskTitle = useCallback((taskId: string, title: string) => {
+    dispatch(changeTaskTitleAC(id, taskId, title));
+  }, [dispatch]);
+
+  const addTask = useCallback( (title: string) => {
+    dispatch(addTaskAC(id, title));
+  }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
     changeFilter(id, "All");
@@ -73,18 +70,19 @@ export const Todolist = memo((props: TodolistPropsType) => {
           <DeleteIcon/>
         </IconButton>
       </div>
-      <AddItemForm addItem={(title: string) => addTask(id, title)}/>
+      <AddItemForm addItem={addTask}/>
       {
         tasksForTodolist.map((task) =>
           <Task
             key={task.id}
-            id={task.id}
+           /* id={task.id}*/
             todoId={id}
-            title={task.title}
-            isDone={task.isDone}
+            task={task}
+            /*title={task.title}
+            isDone={task.isDone}*/
             changeTaskStatus={changeTaskStatus}
             removeTask={removeTask}
-            changeTaskTitle={(title: string) => changeTaskTitle(id, task.id, title)}
+            changeTaskTitle={changeTaskTitle}
           />
         )
       }

@@ -1,7 +1,6 @@
 import {EditableSpanPropsType} from "@/components/EditableSpan/types";
-import {ChangeEvent, memo, useCallback, useState} from "react";
+import {ChangeEvent, memo, useState} from "react";
 import {TextField} from "@mui/material";
-import styles from "./EditableSpan.module.scss"
 
 
 export const EditableSpan = memo((props: EditableSpanPropsType) => {
@@ -15,12 +14,12 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
     setInputTitle(title);
   };
 
-  const offEditMode = useCallback (() => {
+  const offEditMode = () => {
     setIsEditMode(false);
     if (inputTitle.trim()) {
       changeTitle(inputTitle);
     }
-  }, [changeTitle, inputTitle]);
+  };
 
   const onChangeTitleValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputTitle(e.currentTarget.value);

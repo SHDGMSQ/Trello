@@ -1,6 +1,9 @@
+import {TasksType, TaskType} from "@/components/Task/types";
+
 export type TodolistPropsType = {
   id: string;
   title: string;
+  tasks: Array<TaskType>;
   removeTodolist: (id: string) => void;
   changeFilter: (todoId: string, value: FilterValuesType) => void;
   filter: FilterValuesType;

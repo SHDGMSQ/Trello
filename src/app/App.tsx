@@ -19,26 +19,26 @@ export const App = () => {
   const addTodolist = useCallback((title: string) => {
     const todoId = uuidv4();
     dispatch(addTodolistAC(todoId, title));
-  }, [dispatch, addTodolistAC]);
+  }, [dispatch]);
 
   const removeTodolist = useCallback((todoId: string) => {
     dispatch(removeTodolistAC(todoId));
-  }, [dispatch, removeTodolistAC]);
+  }, [dispatch]);
 
   const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
     dispatch(changeFilterAC(todoId, value));
-  }, [dispatch, changeFilterAC]);
+  }, [dispatch]);
 
   const changeTodolistTitle = useCallback((todoId: string, title: string) => {
     dispatch(changeTodolistTitleAC(todoId, title));
-  }, [dispatch, changeTodolistTitleAC]);
+  }, [dispatch]);
 
   return (
     <Box>
       <Grid container padding={2}>
         <AddItemForm addItem={addTodolist}/>
       </Grid>
-      <div className={styles.todolists}>
+      <div>
         <Grid container spacing={4} padding={2}>
           {
             todolists.map((tl) =>
@@ -46,6 +46,7 @@ export const App = () => {
                 <Paper elevation={3}>
                   <Todolist
                     id={tl.id}
+                    tasks={tasks[tl.id]}
                     title={tl.title}
                     removeTodolist={removeTodolist}
                     changeFilter={changeFilter}

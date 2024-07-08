@@ -7,28 +7,28 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {IconButton} from "@mui/material";
 
 export const Task = memo((props: TaskPropsType) => {
-  const {title, isDone, id, changeTaskStatus, todoId, removeTask, changeTaskTitle} = props;
+  const {task, changeTaskStatus, todoId, removeTask, changeTaskTitle} = props;
 
   const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    changeTaskStatus(todoId, id, e.currentTarget.checked);
-  }, [changeTaskStatus, todoId, id]);
+    changeTaskStatus(todoId, task.id, e.currentTarget.checked);
+  }, [changeTaskStatus, todoId, task.id]);
 
   const removeTaskHandler = useCallback(() => {
-    removeTask(todoId, id);
-  }, [removeTask, todoId, id]);
+    removeTask(todoId, task.id);
+  }, [removeTask, todoId, task.id]);
 
   const changeTitle = useCallback((title: string) => {
-    changeTaskTitle(title);
-  }, [changeTaskTitle, id]);
+    changeTaskTitle(task.id, title);
+  }, [changeTaskTitle, task.id]);
 
   return (
     <div className={styles.container}>
       <div>
-        <Checkbox checked={isDone} onChange={onChangeTaskStatusHandler} color="primary"/>
-        <EditableSpan title={title} changeTitle={changeTitle}/>
+        <Checkbox checked={task.isDone} onChange={onChangeTaskStatusHandler} color="primary"/>
+        <EditableSpan title={task.title} changeTitle={changeTitle}/>
       </div>
       <IconButton aria-label="delete" color="primary" onClick={removeTaskHandler}>
-        <DeleteIcon />
+        <DeleteIcon/>
       </IconButton>
     </div>
   );

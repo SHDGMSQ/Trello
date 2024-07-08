@@ -10,11 +10,9 @@ export type TaskType = {
 }
 
 export type TaskPropsType = {
-  title: string;
-  isDone: boolean;
-  id: string;
+  task: TaskType;
   todoId: string;
   changeTaskStatus: (todoId: string, taskId: string, status: boolean) => void;
   removeTask: (todoId: string, taskId: string) => void;
-  changeTaskTitle: (title: string) => void;
+  changeTaskTitle: (taskId: string, title: string) => void;
 }
