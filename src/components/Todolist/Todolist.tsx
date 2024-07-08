@@ -4,6 +4,10 @@ import styles from "./Todolist.module.scss";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
 import {EditableSpan} from "@/components/EditableSpan/EditableSpan";
+import {IconButton} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 export const Todolist = memo((props: TodolistPropsType) => {
   const {id, title, tasks, removeTodolist, addTask, changeTaskStatus, changeTasks, filter, removeTask, changeTaskTitle, changeTodoTitle} = props;
@@ -50,7 +54,9 @@ export const Todolist = memo((props: TodolistPropsType) => {
         <h3>
           <EditableSpan title={title} changeTitle={changeTodolistTitleHandler} />
         </h3>
-        <button onClick={removeTodolistHandler}>x</button>
+        <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+          <DeleteIcon />
+        </IconButton>
       </div>
       <AddItemForm addItem={addTaskHandler}/>
       {
@@ -67,11 +73,29 @@ export const Todolist = memo((props: TodolistPropsType) => {
           />
         )
       }
-      <div className={styles.btnsContainer}>
-        <button onClick={onAllClickHandler} className={`${filter === "All" ? styles.chosenButton : ""}`}>All</button>
-        <button onClick={onActiveClickHandler} className={`${filter === "Active" ? styles.chosenButton : ""}`}>Active</button>
-        <button onClick={onCompletedClickHandler} className={`${filter === "Completed" ? styles.chosenButton : ""}`}>Completed</button>
-      </div>
+      <Stack direction="row" spacing={1} className={styles.btnsContainer}>
+        <Button
+          color="primary"
+          onClick={onAllClickHandler}
+          variant={filter === "All" ? "contained" : "text"}
+        >
+          All
+        </Button>
+        <Button
+          variant={filter === "Active" ? "contained" : "text"}
+          color="primary"
+          onClick={onActiveClickHandler}
+        >
+          Active
+        </Button>
+        <Button
+          variant={filter === "Completed" ? "contained" : "text"}
+          color="primary"
+          onClick={onCompletedClickHandler}
+        >
+          Completed
+        </Button>
+      </Stack>
     </div>
   );
 });

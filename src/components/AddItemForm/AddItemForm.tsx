@@ -1,6 +1,8 @@
 import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {AddItemFormPropsType} from "@/components/AddItemForm/types";
 import styles from "./AddItemForm.module.scss";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {IconButton, TextField} from "@mui/material";
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
   const {addItem} = props;
@@ -35,15 +37,21 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
   };
 
   return (
-    <div>
-      <input
+    <div className={styles.container}>
+      <TextField
         type="text"
         onChange={onChangeInput}
         value={title}
         onKeyPress={onKeyPressHandler}
+        variant="outlined"
+        label="Type value"
+        size="small"
+        error={!!error}
+        helperText={error}
       />
-      <button onClick={addItemHandler}>+</button>
-      <div className={`${error ? styles.error : styles.hiddenError}`}>{error}</div>
+      <IconButton aria-label="delete" color="primary" onClick={addItemHandler}>
+        <AddCircleOutlineIcon/>
+      </IconButton>
     </div>
   );
 });

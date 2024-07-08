@@ -1,5 +1,7 @@
 import {EditableSpanPropsType} from "@/components/EditableSpan/types";
 import {ChangeEvent, memo, useCallback, useState} from "react";
+import {TextField} from "@mui/material";
+import styles from "./EditableSpan.module.scss"
 
 
 export const EditableSpan = memo((props: EditableSpanPropsType) => {
@@ -27,11 +29,15 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
   return (
     <span>
       {isEditMode
-        ? <input
-          value={inputTitle}
+        ?
+        <TextField
+          type="text"
           onChange={onChangeTitleValue}
+          value={inputTitle}
           onBlur={offEditMode}
           autoFocus
+          variant="standard"
+          size="small"
         />
         : <span onDoubleClick={onEditMode}>{title}</span>
       }
