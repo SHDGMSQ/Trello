@@ -9,7 +9,6 @@ import {Box, Grid, Paper} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {addTodolistAC, changeFilterAC, changeTodolistTitleAC, removeTodolistAC} from "@/store/reducers/todolistReducer";
 import {AppRootStateType} from "@/store/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "@/store/reducers/taskReducer";
 
 export const App = () => {
 
@@ -26,25 +25,9 @@ export const App = () => {
     dispatch(removeTodolistAC(todoId));
   }, [dispatch, removeTodolistAC]);
 
-  const addTask = useCallback((todoId: string, title: string) => {
-    dispatch(addTaskAC(todoId, title));
-  }, [dispatch, addTaskAC]);
-
-  const changeTaskStatus = useCallback((todoId: string, taskId: string, status: boolean) => {
-    dispatch(changeTaskStatusAC(todoId, taskId, status));
-  }, [dispatch, changeTaskStatusAC]);
-
   const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
     dispatch(changeFilterAC(todoId, value));
   }, [dispatch, changeFilterAC]);
-
-  const removeTask = useCallback((todoId: string, taskId: string) => {
-    dispatch(removeTaskAC(todoId, taskId));
-  }, [dispatch, removeTaskAC]);
-
-  const changeTaskTitle = useCallback((todoId: string, taskId: string, title: string) => {
-    dispatch(changeTaskTitleAC(todoId, taskId, title));
-  }, [dispatch, changeTaskTitleAC]);
 
   const changeTodolistTitle = useCallback((todoId: string, title: string) => {
     dispatch(changeTodolistTitleAC(todoId, title));
@@ -64,14 +47,9 @@ export const App = () => {
                   <Todolist
                     id={tl.id}
                     title={tl.title}
-                    tasks={tasks[tl.id]}
                     removeTodolist={removeTodolist}
-                    addTask={addTask}
-                    changeTaskStatus={changeTaskStatus}
                     changeFilter={changeFilter}
                     filter={tl.filter}
-                    removeTask={removeTask}
-                    changeTaskTitle={changeTaskTitle}
                     changeTodoTitle={changeTodolistTitle}
                   />
                 </Paper>

@@ -16,5 +16,5 @@ export type TaskPropsType = {
   todoId: string;
   changeTaskStatus: (todoId: string, taskId: string, status: boolean) => void;
   removeTask: (todoId: string, taskId: string) => void;
-  changeTaskTitle: (id: string, title: string) => void;
+  changeTaskTitle: (title: string) => void;
 }

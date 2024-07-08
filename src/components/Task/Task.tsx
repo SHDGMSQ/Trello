@@ -18,7 +18,7 @@ export const Task = memo((props: TaskPropsType) => {
   }, [removeTask, todoId, id]);
 
   const changeTitle = useCallback((title: string) => {
-    changeTaskTitle(id, title);
+    changeTaskTitle(title);
   }, [changeTaskTitle, id]);
 
   return (
