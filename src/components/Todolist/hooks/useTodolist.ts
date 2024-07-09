@@ -2,6 +2,7 @@ import {useDispatch} from "react-redux";
 import {useCallback} from "react";
 import {addTaskAC} from "@/store/reducers/taskReducer";
 import {TodolistPropsType} from "@/components/Todolist/types";
+import {TaskStatuses} from "@/api/types";
 
 export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useDispatch();
@@ -33,11 +34,11 @@ export const useTodolist = (props: TodolistPropsType) => {
   let tasksForTodolist = tasks;
 
   if (filter === "Active") {
-    tasksForTodolist = tasksForTodolist.filter(task => !task.isDone);
+    tasksForTodolist = tasksForTodolist.filter(task => task.status === TaskStatuses.New);
   }
 
   if (filter === "Completed") {
-    tasksForTodolist = tasksForTodolist.filter(task => task.isDone);
+    tasksForTodolist = tasksForTodolist.filter(task => task.status === TaskStatuses.Completed);
   }
 
   return {

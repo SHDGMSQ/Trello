@@ -1,13 +1,10 @@
+import {TaskResponseType} from "@/api/types";
+
 export type TasksType = {
   [key: string]: Array<TaskType>;
 }
 
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-
-}
+export type TaskType = TaskResponseType;
 
 export type TaskPropsType = {
   task: TaskType;

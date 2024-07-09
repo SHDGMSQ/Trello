@@ -34,6 +34,7 @@ const tasksApi = {
     return axios.put<any, AxiosResponse<ResponseType<{ item: TaskResponseType }>>, TaskResponseType>(`todo-lists/${todoId}/tasks/${taskId}`, body);
   },
 };
+
 export const api = {
   todolistsApi,
   tasksApi,

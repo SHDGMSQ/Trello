@@ -5,15 +5,23 @@ export const todoId1 = uuidv4();
 export const todoId2 = uuidv4();
 
 const initialState: Array<TodolistType> = [
-  {id: todoId1, title: "First", filter: "All"},
-  {id: todoId2, title: "Second", filter: "All"},
+  {id: todoId1, title: "First", filter: "All", addedDate: "", order: 0},
+  {id: todoId2, title: "Second", filter: "All", addedDate: "", order: 0},
 ];
 
 export const todolistReducer = (state: Array<TodolistType> = initialState, action: TodolistActionsType): Array<TodolistType> => {
   switch (action.type) {
     case "TODOLISTS/ADD-TODOLIST": {
       const {todoId, title} = action.payload;
-      return [{id: todoId, title, filter: "All"}, ...state];
+      return [
+        {
+          id: todoId,
+          title,
+          filter: "All",
+          addedDate: "",
+          order: 0,
+        }, ...state
+      ];
     }
     case "TODOLISTS/REMOVE-TODOLIST": {
       const {todoId} = action.payload;

@@ -1,4 +1,5 @@
 import {TaskType} from "@/components/Task/types";
+import {TodolistResponseType} from "@/api/types";
 
 export type TodolistPropsType = {
   id: string;
@@ -10,9 +11,7 @@ export type TodolistPropsType = {
   changeTodoTitle: (id: string, title: string) => void;
 }
 
-export type TodolistType = {
-  id: string;
-  title: string;
+export type TodolistType = TodolistResponseType & {
   filter: FilterValuesType
 }
 
