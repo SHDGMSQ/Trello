@@ -1,7 +1,15 @@
-import {TasksType} from "@/components/Task/types";
-import {AddTodolistType, RemoveTodolistType, todoId1, todoId2} from "@/store/reducers/todolistReducer";
+import {TasksType, TaskType} from "@/components/Task/types";
+import {
+  AddTodolistType,
+  RemoveTodolistType,
+  SetTodolistsType,
+  todoId1,
+  todoId2
+} from "@/store/reducers/todolistReducer";
 import {v4 as uuidv4} from "uuid";
 import {TaskPriorities, TaskStatuses} from "@/api/types";
+import {Dispatch} from "redux";
+import {api} from "@/api/api";
 
 const initialState: TasksType = {
   [todoId1]: [
@@ -76,6 +84,16 @@ export const taskReducer = (state: TasksType = initialState, action: TasksAction
       delete stateCopy[todoId];
       return stateCopy;
     }
+    case "TODOLISTS/SET-TODOLISTS": {
+      const {todolists} = action.payload;
+      const copyState = {...state};
+      todolists.forEach((tl) => copyState[tl.id] = []);
+      return copyState;
+    }
+    case "TASKS/SET-TASKS": {
+      const {todoId, tasks} = action.payload;
+      return {...state, [todoId]: tasks};
+    }
     default:
       return state;
   }
@@ -112,6 +130,21 @@ export const changeTaskTitleAC = (todoId: string, taskId: string, title: string)
     title
   }
 }) as const;
+export const setTasksAC = (todoId: string, tasks: Array<TaskType>) => ({
+  type: "TASKS/SET-TASKS",
+  payload: {
+    todoId,
+    tasks
+  }
+}) as const;
+
+//thunks
+export const fetchTasksTC = (todoId: string): any => (dispatch: Dispatch) => {
+  api.tasksApi.getTasks(todoId)
+    .then((res) => {
+      dispatch(setTasksAC(todoId, res.data.items));
+    })
+};
 
 //types
 type TasksActionsType =
@@ -120,9 +153,12 @@ type TasksActionsType =
   | RemoveTaskType
   | ChangeTaskTitleType
   | AddTodolistType
-  | RemoveTodolistType;
+  | RemoveTodolistType
+  | SetTodolistsType
+  | SetTasks;
 
 type AddTaskType = ReturnType<typeof addTaskAC>;
 type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>;
 type RemoveTaskType = ReturnType<typeof removeTaskAC>;
 type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>;
+type SetTasks = ReturnType<typeof setTasksAC>;
