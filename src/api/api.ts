@@ -12,7 +12,7 @@ const todolistsApi = {
   createTodolist(title: string) {
     return axios.post<any, AxiosResponse<ResponseType<{ item: TodolistResponseType }>>, { title: string }>("todo-lists", {title});
   },
-  deleteTodolist(todoId: string) {
+  removeTodolist(todoId: string) {
     return axios.delete<any, AxiosResponse<ResponseType>>(`todo-lists/${todoId}`);
   },
   updateTodolist(todoId: string, title: string) {
@@ -27,11 +27,11 @@ const tasksApi = {
   createTask(todoId: string, title: string) {
     return axios.post<any, AxiosResponse<ResponseType<{ item: TaskResponseType }>>, { title: string }>(`todo-lists/${todoId}/tasks`, {title});
   },
-  deleteTask(todoId: string, taskId: string) {
+  removeTask(todoId: string, taskId: string) {
     return axios.delete<any, AxiosResponse<ResponseType>>(`todo-lists/${todoId}/tasks/${taskId}`);
   },
-  updateTask(todoId: string, taskId: string, body: TaskResponseType) {
-    return axios.put<any, AxiosResponse<ResponseType<{ item: TaskResponseType }>>, TaskResponseType>(`todo-lists/${todoId}/tasks/${taskId}`, body);
+  updateTask(todoId: string, task: TaskResponseType) {
+    return axios.put<any, AxiosResponse<ResponseType<{ item: TaskResponseType }>>, TaskResponseType>(`todo-lists/${todoId}/tasks/${task.id}`, task);
   },
 };
 
