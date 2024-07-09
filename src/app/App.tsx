@@ -5,7 +5,7 @@ import {useApp} from "@/app/hooks/useApp";
 
 export const App = () => {
 
-  const {todolists, removeTodolist, addTodolist, changeTodolistTitle, changeFilter, tasks} = useApp();
+  const {todolists, addTodolist, tasks} = useApp();
 
   return (
     <Box>
@@ -22,10 +22,7 @@ export const App = () => {
                     id={tl.id}
                     tasks={tasks[tl.id]}
                     title={tl.title}
-                    removeTodolist={removeTodolist}
-                    changeFilter={changeFilter}
                     filter={tl.filter}
-                    changeTodoTitle={changeTodolistTitle}
                   />
                 </Paper>
               </Grid>

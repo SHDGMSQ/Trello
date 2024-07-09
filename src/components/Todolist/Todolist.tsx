@@ -13,8 +13,8 @@ import {useTodolist} from "@/components/Todolist/hooks/useTodolist";
 export const Todolist = memo((props: TodolistPropsType) => {
 
   const {
-    changeTodolistTitleHandler,
-    removeTodolistHandler,
+    changeTodolistTitle,
+    removeTodolist,
     tasksForTodolist,
     onAllClickHandler,
     onActiveClickHandler,
@@ -29,9 +29,9 @@ export const Todolist = memo((props: TodolistPropsType) => {
     <div className={styles.container}>
       <div className={styles.todoHeader}>
         <h3>
-          <EditableSpan title={title} changeTitle={changeTodolistTitleHandler}/>
+          <EditableSpan title={title} changeTitle={changeTodolistTitle}/>
         </h3>
-        <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+        <IconButton aria-label="delete" onClick={removeTodolist}>
           <DeleteIcon/>
         </IconButton>
       </div>

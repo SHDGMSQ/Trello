@@ -1,39 +1,40 @@
 import {useCallback, useEffect} from "react";
-import {addTaskAC, fetchTasksTC} from "@/store/reducers/taskReducer";
+import {addTaskTC, fetchTasksTC} from "@/store/reducers/taskReducer";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {TaskStatuses} from "@/api/types";
 import {useAppDispatch} from "@/store/hooks/hooks";
+import {changeFilterAC, changeTodolistTitleTC, removeTodolistTC} from "@/store/reducers/todolistReducer";
 
 export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
 
-  const {id, title, filter, tasks, removeTodolist, changeFilter, changeTodoTitle} = props;
+  const {id, title, filter, tasks} = props;
 
   useEffect(() => {
     dispatch(fetchTasksTC(id));
   }, []);
 
-  const removeTodolistHandler = useCallback(() => {
-    removeTodolist(id);
-  }, [removeTodolist, id]);
+  const removeTodolist = useCallback(() => {
+    dispatch(removeTodolistTC(id));
+  }, [dispatch, id]);
 
-  const changeTodolistTitleHandler = useCallback((title: string) => {
-    changeTodoTitle(id, title);
-  }, [changeTodoTitle, id]);
+  const changeTodolistTitle = useCallback((title: string) => {
+    dispatch(changeTodolistTitleTC(id, title));
+  }, [dispatch, id]);
 
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskAC(id, title));
+    dispatch(addTaskTC(id, title));
   }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
-    changeFilter(id, "All");
-  }, [changeFilter, id]);
+    dispatch(changeFilterAC(id, "All"));
+  }, [dispatch, id]);
   const onActiveClickHandler = useCallback(() => {
-    changeFilter(id, "Active");
-  }, [changeFilter, id]);
+    dispatch(changeFilterAC(id, "Active"));
+  }, [dispatch, id]);
   const onCompletedClickHandler = useCallback(() => {
-    changeFilter(id, "Completed");
-  }, [changeFilter, id]);
+    dispatch(changeFilterAC(id, "Completed"));
+  }, [dispatch, id]);
 
   let tasksForTodolist = tasks;
 
@@ -50,8 +51,8 @@ export const useTodolist = (props: TodolistPropsType) => {
     onCompletedClickHandler,
     onActiveClickHandler,
     onAllClickHandler,
-    changeTodolistTitleHandler,
-    removeTodolistHandler,
+    changeTodolistTitle,
+    removeTodolist,
     addTask,
     filter,
     id,
