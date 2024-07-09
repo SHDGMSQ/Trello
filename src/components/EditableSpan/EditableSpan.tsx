@@ -1,29 +1,12 @@
 import {EditableSpanPropsType} from "@/components/EditableSpan/types";
-import {ChangeEvent, memo, useState} from "react";
+import {memo} from "react";
 import {TextField} from "@mui/material";
+import {useEditableSpan} from "@/components/EditableSpan/hooks/useEditableSpan";
 
 
 export const EditableSpan = memo((props: EditableSpanPropsType) => {
-  const {title, changeTitle} = props;
+  const {isEditMode, offEditMode, onEditMode, onChangeTitleValue, inputTitle, title} = useEditableSpan(props);
 
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [inputTitle, setInputTitle] = useState<string>("");
-
-  const onEditMode = () => {
-    setIsEditMode(true);
-    setInputTitle(title);
-  };
-
-  const offEditMode = () => {
-    setIsEditMode(false);
-    if (inputTitle.trim()) {
-      changeTitle(inputTitle);
-    }
-  };
-
-  const onChangeTitleValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputTitle(e.currentTarget.value);
-  };
 
   return (
     <span>

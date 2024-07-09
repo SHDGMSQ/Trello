@@ -1,4 +1,4 @@
-import {TasksType, TaskType} from "@/components/Task/types";
+import {TaskType} from "@/components/Task/types";
 
 export type TodolistPropsType = {
   id: string;
@@ -16,4 +16,4 @@ export type TodolistType = {
   filter: FilterValuesType
 }
 
-export type FilterValuesType  = "All" | "Active" | "Completed";
+export type FilterValuesType = "All" | "Active" | "Completed";

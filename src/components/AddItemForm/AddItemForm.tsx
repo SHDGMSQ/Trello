@@ -1,40 +1,12 @@
-import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
+import {memo} from "react";
 import {AddItemFormPropsType} from "@/components/AddItemForm/types";
 import styles from "./AddItemForm.module.scss";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {IconButton, TextField} from "@mui/material";
+import {useAddItemForm} from "@/components/AddItemForm/hooks/useAddItemForm";
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
-  const {addItem} = props;
-
-  const [title, setTitle] = useState<string>("");
-  const [error, setError] = useState<null | string>(null);
-
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if (error) {
-      setError(null);
-    }
-    if (!title && !e.currentTarget.value.trim()) {
-      return;
-    } else {
-      setTitle(e.currentTarget.value);
-    }
-  };
-
-  const addItemHandler = () => {
-    if (title === "") {
-      setError("Field is required!");
-    } else {
-      addItem(title.trim());
-      setTitle("");
-    }
-  };
-
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      addItemHandler();
-    }
-  };
+  const {title, error, onChangeInput, addItemHandler, onKeyPressHandler} = useAddItemForm(props);
 
   return (
     <div className={styles.container}>

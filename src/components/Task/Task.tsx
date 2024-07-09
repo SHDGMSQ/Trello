@@ -1,33 +1,29 @@
-import {ChangeEvent, memo, useCallback} from "react";
+import {memo} from "react";
 import styles from "./Task.module.scss";
 import {TaskPropsType} from "@/components/Task/types";
 import {EditableSpan} from "@/components/EditableSpan/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {IconButton} from "@mui/material";
+import {useTask} from "@/components/Task/hooks/useTask";
 
 export const Task = memo((props: TaskPropsType) => {
-  const {task, changeTaskStatus, todoId, removeTask, changeTaskTitle} = props;
 
-  const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    changeTaskStatus(todoId, task.id, e.currentTarget.checked);
-  }, [changeTaskStatus, todoId, task.id]);
+  const {
+    changeTaskTitle,
+    changeTaskStatus,
+    removeTask,
+    task
+  } = useTask(props);
 
-  const removeTaskHandler = useCallback(() => {
-    removeTask(todoId, task.id);
-  }, [removeTask, todoId, task.id]);
-
-  const changeTitle = useCallback((title: string) => {
-    changeTaskTitle(task.id, title);
-  }, [changeTaskTitle, task.id]);
 
   return (
     <div className={styles.container}>
       <div>
-        <Checkbox checked={task.isDone} onChange={onChangeTaskStatusHandler} color="primary"/>
-        <EditableSpan title={task.title} changeTitle={changeTitle}/>
+        <Checkbox checked={task.isDone} onChange={changeTaskStatus} color="primary"/>
+        <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
       </div>
-      <IconButton aria-label="delete" color="primary" onClick={removeTaskHandler}>
+      <IconButton aria-label="delete" color="primary" onClick={removeTask}>
         <DeleteIcon/>
       </IconButton>
     </div>
