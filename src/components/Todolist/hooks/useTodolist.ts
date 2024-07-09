@@ -1,11 +1,11 @@
-import {useDispatch} from "react-redux";
 import {useCallback, useEffect} from "react";
 import {addTaskAC, fetchTasksTC} from "@/store/reducers/taskReducer";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {TaskStatuses} from "@/api/types";
+import {useAppDispatch} from "@/store/hooks/hooks";
 
 export const useTodolist = (props: TodolistPropsType) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {id, title, filter, tasks, removeTodolist, changeFilter, changeTodoTitle} = props;
 

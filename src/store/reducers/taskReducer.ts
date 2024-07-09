@@ -1,46 +1,11 @@
 import {TasksType, TaskType} from "@/components/Task/types";
-import {
-  AddTodolistType,
-  RemoveTodolistType,
-  SetTodolistsType,
-  todoId1,
-  todoId2
-} from "@/store/reducers/todolistReducer";
+import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/reducers/todolistReducer";
 import {v4 as uuidv4} from "uuid";
 import {TaskPriorities, TaskStatuses} from "@/api/types";
-import {Dispatch} from "redux";
 import {api} from "@/api/api";
+import {AppThunk} from "@/store/types";
 
-const initialState: TasksType = {
-  [todoId1]: [
-    {
-      id: uuidv4(), title: "first task1", description: null, todoListId: todoId1, order: 0,
-      status: TaskStatuses.Completed, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-    {
-      id: uuidv4(), title: "second task1", description: null, todoListId: todoId1, order: 0,
-      status: TaskStatuses.Completed, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-    {
-      id: uuidv4(), title: "third task1", description: null, todoListId: todoId1, order: 0,
-      status: TaskStatuses.New, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-  ],
-  [todoId2]: [
-    {
-      id: uuidv4(), title: "first task2", description: null, todoListId: todoId2, order: 0,
-      status: TaskStatuses.New, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-    {
-      id: uuidv4(), title: "second task2", description: null, todoListId: todoId2, order: 0,
-      status: TaskStatuses.New, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-    {
-      id: uuidv4(), title: "third task1", description: null, todoListId: todoId1, order: 0,
-      status: TaskStatuses.Completed, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""
-    },
-  ]
-};
+const initialState: TasksType = {};
 
 export const taskReducer = (state: TasksType = initialState, action: TasksActionsType): TasksType => {
   switch (action.type) {
@@ -57,7 +22,7 @@ export const taskReducer = (state: TasksType = initialState, action: TasksAction
             title,
             status: TaskStatuses.New,
             description: null,
-            todoListId: todoId1,
+            todoListId: todoId,
             order: 0,
             priority: TaskPriorities.Low,
             startDate: "",
@@ -139,7 +104,7 @@ export const setTasksAC = (todoId: string, tasks: Array<TaskType>) => ({
 }) as const;
 
 //thunks
-export const fetchTasksTC = (todoId: string): any => (dispatch: Dispatch) => {
+export const fetchTasksTC = (todoId: string): AppThunk => (dispatch) => {
   api.tasksApi.getTasks(todoId)
     .then((res) => {
       dispatch(setTasksAC(todoId, res.data.items));
@@ -147,7 +112,7 @@ export const fetchTasksTC = (todoId: string): any => (dispatch: Dispatch) => {
 };
 
 //types
-type TasksActionsType =
+export type TasksActionsType =
   | AddTaskType
   | ChangeTaskStatusType
   | RemoveTaskType
