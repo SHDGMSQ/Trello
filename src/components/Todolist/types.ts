@@ -1,5 +1,6 @@
 import {TaskType} from "@/components/Task/types";
 import {TodolistResponseType} from "@/api/types";
+import {RequestAppStatusType} from "@/app/types";
 
 export type TodolistPropsType = {
   id: string;
@@ -9,7 +10,8 @@ export type TodolistPropsType = {
 }
 
 export type TodolistType = TodolistResponseType & {
-  filter: FilterValuesType
+  filter: FilterValuesType,
+  entityStatus: RequestAppStatusType
 }
 
 export type FilterValuesType = "All" | "Active" | "Completed";

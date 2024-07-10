@@ -2,7 +2,7 @@ import {TasksType, TaskType} from "@/components/Task/types";
 import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/reducers/todolistReducer";
 import {api} from "@/api/api";
 import {AppThunk} from "@/store/types";
-import {setAppStatusAC} from "@/store/reducers/appReducer";
+import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
 
 const initialState: TasksType = {};
 
@@ -48,8 +48,6 @@ export const taskReducer = (state: TasksType = initialState, action: TasksAction
   }
 };
 
-//init
-
 //actions
 export const setTasksAC = (todoId: string, tasks: Array<TaskType>) => ({
   type: "TASKS/SET-TASKS",
@@ -85,8 +83,10 @@ export const fetchTasksTC = (todoId: string): AppThunk => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
   api.tasksApi.getTasks(todoId)
     .then((res) => {
-      dispatch(setTasksAC(todoId, res.data.items));
-      dispatch(setAppStatusAC("succeeded"));
+      if (!res.data.error) {
+        dispatch(setTasksAC(todoId, res.data.items));
+        dispatch(setAppStatusAC("succeeded"));
+      }
     });
 };
 export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch) => {
@@ -97,6 +97,9 @@ export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch)
         const {item} = res.data.data;
         dispatch(addTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+        dispatch(setAppStatusAC("failed"));
       }
     });
 };
@@ -108,6 +111,9 @@ export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk =>
         const {item} = res.data.data;
         dispatch(changeTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+        dispatch(setAppStatusAC("failed"));
       }
     });
 };

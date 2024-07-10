@@ -1,9 +1,8 @@
-import {Todolist} from "@/components/Todolist/Todolist";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
-import {Box, Grid, LinearProgress, Paper} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import {useApp} from "@/app/hooks/useApp";
-import {memo} from "react";
 import {TodolistsList} from "@/pages/TodolistsList/TodolistsList";
+import {ErrorSnackbar} from "@/components/ErrorSnackbar/ErrorSnackbar";
 
 export const App = () => {
 
@@ -11,7 +10,8 @@ export const App = () => {
 
   return (
     <Box>
-      {appStatus === "loading" && <LinearProgress />}
+      {appStatus === "loading" && <LinearProgress/>}
+      <ErrorSnackbar />
       <Grid container padding={2}>
         <AddItemForm addItem={addTodolist}/>
       </Grid>
