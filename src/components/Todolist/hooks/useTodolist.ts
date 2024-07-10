@@ -8,7 +8,7 @@ import {changeFilterAC, changeTodolistTitleTC, removeTodolistTC} from "@/store/r
 export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
 
-  const {id, title, filter, tasks} = props;
+  const {id, title, filter, tasks, entityStatus} = props;
 
   useEffect(() => {
     dispatch(fetchTasksTC(id));
@@ -57,5 +57,6 @@ export const useTodolist = (props: TodolistPropsType) => {
     filter,
     id,
     title,
+    entityStatus,
   };
 };

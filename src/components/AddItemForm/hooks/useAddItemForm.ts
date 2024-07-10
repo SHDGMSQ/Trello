@@ -2,7 +2,7 @@ import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {AddItemFormPropsType} from "@/components/AddItemForm/types";
 
 export const useAddItemForm = (props: AddItemFormPropsType) => {
-  const {addItem} = props;
+  const {addItem, disabled} = props;
 
   const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<null | string>(null);
@@ -39,5 +39,6 @@ export const useAddItemForm = (props: AddItemFormPropsType) => {
     onChangeInput,
     title,
     error,
+    disabled,
   };
 };

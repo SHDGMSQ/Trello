@@ -1,3 +1,4 @@
 export type AddItemFormPropsType =  {
-  addItem: (title: string) => void
+  addItem: (title: string) => void;
+  disabled?: boolean;
 }

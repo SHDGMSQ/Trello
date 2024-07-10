@@ -7,11 +7,12 @@ export type TodolistPropsType = {
   title: string;
   tasks: Array<TaskType>;
   filter: FilterValuesType;
+  entityStatus: RequestAppStatusType;
 }
 
 export type TodolistType = TodolistResponseType & {
-  filter: FilterValuesType,
-  entityStatus: RequestAppStatusType
+  filter: FilterValuesType;
+  entityStatus: RequestAppStatusType;
 }
 
 export type FilterValuesType = "All" | "Active" | "Completed";

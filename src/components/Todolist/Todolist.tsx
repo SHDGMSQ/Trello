@@ -22,26 +22,28 @@ export const Todolist = memo((props: TodolistPropsType) => {
     addTask,
     filter,
     id,
-    title
+    title,
+    entityStatus
   } = useTodolist(props);
 
   return (
     <div className={styles.container}>
       <div className={styles.todoHeader}>
         <h3>
-          <EditableSpan title={title} changeTitle={changeTodolistTitle}/>
+          <EditableSpan title={title} changeTitle={changeTodolistTitle} disabled={entityStatus === "loading"}/>
         </h3>
-        <IconButton aria-label="delete" onClick={removeTodolist}>
+        <IconButton aria-label="delete" onClick={removeTodolist} disabled={entityStatus === "loading"}>
           <DeleteIcon/>
         </IconButton>
       </div>
-      <AddItemForm addItem={addTask}/>
+      <AddItemForm addItem={addTask} disabled={entityStatus === "loading"}/>
       {
         tasksForTodolist.map((task) =>
           <Task
             key={task.id}
             todoId={id}
             task={task}
+            todoEntityStatus={entityStatus}
           />
         )
       }
@@ -50,6 +52,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
           color="primary"
           onClick={onAllClickHandler}
           variant={filter === "All" ? "contained" : "text"}
+          disabled={entityStatus === "loading"}
         >
           All
         </Button>
@@ -57,6 +60,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
           variant={filter === "Active" ? "contained" : "text"}
           color="primary"
           onClick={onActiveClickHandler}
+          disabled={entityStatus === "loading"}
         >
           Active
         </Button>
@@ -64,6 +68,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
           variant={filter === "Completed" ? "contained" : "text"}
           color="primary"
           onClick={onCompletedClickHandler}
+          disabled={entityStatus === "loading"}
         >
           Completed
         </Button>

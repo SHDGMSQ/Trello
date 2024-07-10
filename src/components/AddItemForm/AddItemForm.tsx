@@ -6,7 +6,7 @@ import {IconButton, TextField} from "@mui/material";
 import {useAddItemForm} from "@/components/AddItemForm/hooks/useAddItemForm";
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
-  const {title, error, onChangeInput, addItemHandler, onKeyPressHandler} = useAddItemForm(props);
+  const {title, error, onChangeInput, addItemHandler, onKeyPressHandler, disabled} = useAddItemForm(props);
 
   return (
     <div className={styles.container}>
@@ -20,8 +20,9 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
         size="small"
         error={!!error}
         helperText={error}
+        disabled={disabled}
       />
-      <IconButton aria-label="delete" color="primary" onClick={addItemHandler}>
+      <IconButton aria-label="delete" color="primary" onClick={addItemHandler} disabled={disabled}>
         <AddCircleOutlineIcon/>
       </IconButton>
     </div>

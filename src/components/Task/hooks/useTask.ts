@@ -5,7 +5,7 @@ import {TaskStatuses} from "@/api/types";
 import {useAppDispatch} from "@/store/hooks/hooks";
 
 export const useTask = (props: TaskPropsType) => {
-  const {task, todoId} = props;
+  const {task, todoId, todoEntityStatus} = props;
 
   const dispatch = useAppDispatch();
 
@@ -28,5 +28,6 @@ export const useTask = (props: TaskPropsType) => {
     removeTask,
     changeTaskStatus,
     task,
+    todoEntityStatus
   };
 };
