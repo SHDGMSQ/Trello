@@ -1,12 +1,15 @@
-import {memo} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "@/components/Todolist/Todolist";
-import {TodolistsListPropsType} from "@/pages/TodolistsList/types";
+import {useTodolistsList} from "@/pages/TodolistsList/hooks/useTodolistsList";
+import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
 
-export const TodolistsList = memo((props: TodolistsListPropsType) => {
-  const {todolists, tasks} = props;
+export const TodolistsList = () => {
+  const {todolists, tasks, addTodolist} = useTodolistsList();
   return (
     <div>
+      <Grid container padding={2}>
+        <AddItemForm addItem={addTodolist}/>
+      </Grid>
       <Grid container spacing={4} padding={2}>
         {
           todolists.map((tl) =>
@@ -24,5 +27,5 @@ export const TodolistsList = memo((props: TodolistsListPropsType) => {
         }
       </Grid>
     </div>
-  )
-});
+  );
+};
