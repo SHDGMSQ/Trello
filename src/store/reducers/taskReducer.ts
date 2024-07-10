@@ -113,15 +113,10 @@ export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispa
 
 //types
 export type TasksActionsType =
-  | SetTasks
-  | AddTaskType
-  | ChangeTaskType
-  | RemoveTaskType
+  | ReturnType<typeof setTasksAC>
+  | ReturnType<typeof addTaskAC>
+  | ReturnType<typeof changeTaskAC>
+  | ReturnType<typeof removeTaskAC>
   | AddTodolistType
   | RemoveTodolistType
   | SetTodolistsType;
-
-type SetTasks = ReturnType<typeof setTasksAC>;
-type AddTaskType = ReturnType<typeof addTaskAC>;
-type ChangeTaskType = ReturnType<typeof changeTaskAC>;
-type RemoveTaskType = ReturnType<typeof removeTaskAC>;

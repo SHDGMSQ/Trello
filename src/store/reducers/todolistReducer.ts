@@ -106,12 +106,10 @@ export const changeTodolistTitleTC = (todoId: string, title: string): AppThunk =
 export type TodolistActionsType =
   | AddTodolistType
   | RemoveTodolistType
-  | ChangeFilterType
-  | ChangeTodolistTitleType
+  | ReturnType<typeof changeFilterAC>
+  | ReturnType<typeof changeTodolistTitleAC>
   | SetTodolistsType;
 
 export type AddTodolistType = ReturnType<typeof addTodolistAC>;
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>;
-type ChangeFilterType = ReturnType<typeof changeFilterAC>;
-type ChangeTodolistTitleType = ReturnType<typeof changeTodolistTitleAC>;
 export type SetTodolistsType = ReturnType<typeof setTodolistsAC>;
