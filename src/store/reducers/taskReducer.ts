@@ -47,6 +47,8 @@ export const taskReducer = (state: TasksType = initialState, action: TasksAction
   }
 };
 
+//init
+
 //actions
 export const setTasksAC = (todoId: string, tasks: Array<TaskType>) => ({
   type: "TASKS/SET-TASKS",
