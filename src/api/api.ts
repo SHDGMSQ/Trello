@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {GetTasksResponseType, ResponseType, TaskResponseType, TodolistResponseType,} from "@/api/types";
+import {LoginType} from "@/pages/Login/types";
 
 axios.defaults.headers.common["API-KEY"] = "b365fbe8-0446-4f2a-ad5f-3c9421879b5e";
 axios.defaults.withCredentials = true;
@@ -35,7 +36,20 @@ const tasksApi = {
   },
 };
 
+const authApi = {
+  login(data: LoginType) {
+    return axios.post<any, AxiosResponse<ResponseType<{userId?: number}>>, LoginType>(`auth/login`, data);
+  },
+  logout() {
+    return axios.delete<any, AxiosResponse<ResponseType>, {data: LoginType}>(`auth/login`);
+  },
+  me() {
+    return axios.get<any, AxiosResponse<ResponseType<{id: number, email: string, login: string}>>, {data: LoginType}>(`auth/me`);
+  },
+}
+
 export const api = {
   todolistsApi,
   tasksApi,
+  authApi
 };
