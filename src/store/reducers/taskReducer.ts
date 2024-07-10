@@ -2,6 +2,7 @@ import {TasksType, TaskType} from "@/components/Task/types";
 import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/reducers/todolistReducer";
 import {api} from "@/api/api";
 import {AppThunk} from "@/store/types";
+import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
 
 const initialState: TasksType = {};
 
@@ -79,34 +80,50 @@ export const removeTaskAC = (todoId: string, taskId: string) => ({
 
 //thunks
 export const fetchTasksTC = (todoId: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.tasksApi.getTasks(todoId)
     .then((res) => {
-      dispatch(setTasksAC(todoId, res.data.items));
+      if (!res.data.error) {
+        dispatch(setTasksAC(todoId, res.data.items));
+        dispatch(setAppStatusAC("succeeded"));
+      }
     });
 };
 export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.tasksApi.createTask(todoId, title)
     .then((res) => {
       if (res.data.resultCode === 0) {
         const {item} = res.data.data;
         dispatch(addTaskAC(todoId, item));
+        dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+        dispatch(setAppStatusAC("failed"));
       }
     });
 };
 export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.tasksApi.updateTask(todoId, updatedTask)
     .then((res) => {
       if (res.data.resultCode === 0) {
         const {item} = res.data.data;
         dispatch(changeTaskAC(todoId, item));
+        dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+        dispatch(setAppStatusAC("failed"));
       }
     });
 };
 export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.tasksApi.removeTask(todoId, taskId)
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(removeTaskAC(todoId, taskId));
+        dispatch(setAppStatusAC("succeeded"));
       }
     });
 };
