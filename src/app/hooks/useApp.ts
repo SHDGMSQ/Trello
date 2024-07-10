@@ -6,6 +6,7 @@ export const useApp = () => {
   const dispatch = useAppDispatch();
   const todolists = useAppSelector(state => state.todolists);
   const tasks = useAppSelector(state => state.tasks);
+  const appStatus = useAppSelector(state => state.app.status);
 
   useEffect(() => {
     dispatch(fetchTodolistsTC());
@@ -19,5 +20,6 @@ export const useApp = () => {
     todolists,
     tasks,
     addTodolist,
+    appStatus
   };
 };
