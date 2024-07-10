@@ -2,6 +2,7 @@ import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {api} from "@/api/api";
 import {TodolistResponseType} from "@/api/types";
 import {AppThunk} from "@/store/types";
+import {setAppStatusAC} from "@/store/reducers/appReducer";
 
 const initialState: Array<TodolistType> = [];
 
@@ -69,34 +70,42 @@ export const changeTodolistTitleAC = (todoId: string, title: string) => ({
 
 //thunks
 export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.todolistsApi.getTodolists()
     .then((res) => {
       dispatch(setTodolistsAC(res.data));
+      dispatch(setAppStatusAC("succeeded"));
     });
 };
 export const removeTodolistTC = (todoId: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.todolistsApi.removeTodolist(todoId)
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(removeTodolistAC(todoId));
+        dispatch(setAppStatusAC("succeeded"));
       }
     });
 };
 export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.todolistsApi.createTodolist(title)
     .then((res) => {
       if (res.data.resultCode === 0) {
         const {item} = res.data.data;
         dispatch(addTodolistAC(item));
+        dispatch(setAppStatusAC("succeeded"));
       }
     });
 };
 export const changeTodolistTitleTC = (todoId: string, title: string): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
   api.todolistsApi.updateTodolist(todoId, title)
     .then((res) => {
       if (res.data.resultCode === 0) {
         const {} = res.data.data;
         dispatch(changeTodolistTitleAC(todoId, title));
+        dispatch(setAppStatusAC("succeeded"));
       }
     });
 };
