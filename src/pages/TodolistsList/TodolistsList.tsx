@@ -2,9 +2,15 @@ import {Grid, Paper} from "@mui/material";
 import {Todolist} from "@/components/Todolist/Todolist";
 import {useTodolistsList} from "@/pages/TodolistsList/hooks/useTodolistsList";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsList = () => {
-  const {todolists, tasks, addTodolist} = useTodolistsList();
+  const {todolists, tasks, addTodolist, isLoggedIn} = useTodolistsList();
+
+  if (!isLoggedIn) {
+     return <Navigate to={"/login"}/>
+  }
+
   return (
     <div>
       <Grid container padding={2}>

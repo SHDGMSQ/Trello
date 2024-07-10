@@ -1,27 +1,26 @@
 import {createRoot} from "react-dom/client";
-import {App} from "@/app/App";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Provider} from "react-redux";
 import {store} from "@/store/store";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {App} from "@/app/App";
 
 const root = document.getElementById("root");
 
 if (!root) {
-  throw new Error("Root not found");
+  throw new Error("App not found");
 }
-
-const container = createRoot(root);
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App/>,
-    children: []
+    path: "*",
+    element: <App/>
   }
 ]);
 
+const container = createRoot(root);
+
 container.render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <RouterProvider router={router}/>
   </Provider>
 );
