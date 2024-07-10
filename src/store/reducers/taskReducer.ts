@@ -3,6 +3,8 @@ import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/re
 import {api} from "@/api/api";
 import {AppThunk} from "@/store/types";
 import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
+import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
+import {AxiosError} from "axios/index";
 
 const initialState: TasksType = {};
 
@@ -86,7 +88,13 @@ export const fetchTasksTC = (todoId: string): AppThunk => (dispatch) => {
       if (!res.data.error) {
         dispatch(setTasksAC(todoId, res.data.items));
         dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC("Something went wrong when tasks fetching"));
+        dispatch(setAppStatusAC("failed"));
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch) => {
@@ -98,9 +106,11 @@ export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch)
         dispatch(addTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC(res.data.messages[0]));
-        dispatch(setAppStatusAC("failed"));
+        handleServerAppError(dispatch, res.data)
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk => (dispatch) => {
@@ -112,9 +122,11 @@ export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk =>
         dispatch(changeTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC(res.data.messages[0]));
-        dispatch(setAppStatusAC("failed"));
+        handleServerAppError(dispatch, res.data)
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispatch) => {
@@ -124,7 +136,12 @@ export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispa
       if (res.data.resultCode === 0) {
         dispatch(removeTaskAC(todoId, taskId));
         dispatch(setAppStatusAC("succeeded"));
+      } else {
+        handleServerAppError(dispatch, res.data);
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 

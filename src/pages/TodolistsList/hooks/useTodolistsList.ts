@@ -7,13 +7,13 @@ export const useTodolistsList = () => {
   const tasks = useAppSelector(state => state.tasks);
   const dispatch = useAppDispatch();
 
-  const addTodolist = useCallback((title: string) => {
-    dispatch(addTodolistTC(title));
-  }, [dispatch]);
-
   useEffect(() => {
     dispatch(fetchTodolistsTC());
   }, []);
+
+  const addTodolist = useCallback((title: string) => {
+    dispatch(addTodolistTC(title));
+  }, [dispatch]);
 
   return {todolists, tasks, addTodolist};
 };

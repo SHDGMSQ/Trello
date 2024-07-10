@@ -2,14 +2,16 @@ import {ChangeEvent, useState} from "react";
 import {EditableSpanPropsType} from "@/components/EditableSpan/types";
 
 export const useEditableSpan = (props: EditableSpanPropsType) => {
-  const {title, changeTitle} = props;
+  const {title, changeTitle, disabled = false} = props;
 
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [inputTitle, setInputTitle] = useState<string>("");
 
   const onEditMode = () => {
-    setIsEditMode(true);
-    setInputTitle(title);
+    if (!disabled) {
+      setIsEditMode(true);
+      setInputTitle(title);
+    }
   };
 
   const offEditMode = () => {

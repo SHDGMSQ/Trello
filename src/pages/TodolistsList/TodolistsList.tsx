@@ -20,6 +20,7 @@ export const TodolistsList = () => {
                   tasks={tasks[tl.id]}
                   title={tl.title}
                   filter={tl.filter}
+                  entityStatus={tl.entityStatus}
                 />
               </Paper>
             </Grid>

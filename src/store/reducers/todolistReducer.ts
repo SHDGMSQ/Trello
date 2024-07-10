@@ -3,6 +3,9 @@ import {api} from "@/api/api";
 import {TodolistResponseType} from "@/api/types";
 import {AppThunk} from "@/store/types";
 import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
+import {RequestAppStatusType} from "@/app/types";
+import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
+import {AxiosError} from "axios";
 
 const initialState: Array<TodolistType> = [];
 
@@ -27,6 +30,10 @@ export const todolistReducer = (state: Array<TodolistType> = initialState, actio
     case "TODOLISTS/CHANGE-TODOLIST-TITLE": {
       const {todoId, title} = action.payload;
       return state.map((tl) => tl.id === todoId ? {...tl, title} : tl);
+    }
+    case "TODOLISTS/CHANGE-TODOLIST-ENTITY-STATUS": {
+      const {todoId, entityStatus} = action.payload;
+      return state.map((tl) => tl.id === todoId ? {...tl, entityStatus} : tl);
     }
     default:
       return state;
@@ -66,6 +73,13 @@ export const changeTodolistTitleAC = (todoId: string, title: string) => ({
     title
   }
 }) as const;
+export const changeTodolistEntityStatusAC = (todoId: string, entityStatus: RequestAppStatusType) => ({
+  type: "TODOLISTS/CHANGE-TODOLIST-ENTITY-STATUS",
+  payload: {
+    todoId,
+    entityStatus
+  }
+}) as const;
 
 
 //thunks
@@ -73,18 +87,33 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
   api.todolistsApi.getTodolists()
     .then((res) => {
-      dispatch(setTodolistsAC(res.data));
-      dispatch(setAppStatusAC("succeeded"));
+      if (res.status === 200) {
+        dispatch(setTodolistsAC(res.data));
+        dispatch(setAppStatusAC("succeeded"));
+      } else {
+        dispatch(setAppErrorAC("Something went wrong when todos fetching!"));
+        dispatch(setAppStatusAC("failed"));
+      }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const removeTodolistTC = (todoId: string): AppThunk => (dispatch) => {
   dispatch(setAppStatusAC("loading"));
+  dispatch(changeTodolistEntityStatusAC(todoId, "loading"));
   api.todolistsApi.removeTodolist(todoId)
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(removeTodolistAC(todoId));
         dispatch(setAppStatusAC("succeeded"));
+        dispatch(changeTodolistEntityStatusAC(todoId, "idle"));
+      } else {
+        handleServerAppError(dispatch, res.data);
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
@@ -96,9 +125,11 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
         dispatch(addTodolistAC(item));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC(res.data.messages[0]));
-        dispatch(setAppStatusAC("failed"));
+        handleServerAppError(dispatch, res.data);
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 export const changeTodolistTitleTC = (todoId: string, title: string): AppThunk => (dispatch) => {
@@ -109,9 +140,11 @@ export const changeTodolistTitleTC = (todoId: string, title: string): AppThunk =
         dispatch(changeTodolistTitleAC(todoId, title));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        dispatch(setAppErrorAC(res.data.messages[0]));
-        dispatch(setAppStatusAC("failed"));
+        handleServerAppError(dispatch, res.data);
       }
+    })
+    .catch((err: AxiosError) => {
+      handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
 
@@ -122,6 +155,7 @@ export type TodolistActionsType =
   | RemoveTodolistType
   | ReturnType<typeof changeFilterAC>
   | ReturnType<typeof changeTodolistTitleAC>
+  | ReturnType<typeof changeTodolistEntityStatusAC>
   | SetTodolistsType;
 
 export type AddTodolistType = ReturnType<typeof addTodolistAC>;
