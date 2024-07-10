@@ -8,12 +8,12 @@ export const ErrorSnackbar = memo(() => {
 
   return (
     <div>
-      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={!!error} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
           severity="error"
           variant="filled"
-          sx={{ width: '100%' }}
+          sx={{width: "100%"}}
         >
           {error}
         </Alert>
