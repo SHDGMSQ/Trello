@@ -1,5 +1,5 @@
-import {AppRootActionsType} from "@/store/types";
-import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
+import {AppRootActionsType} from "@/store/redux/types";
+import {setAppErrorAC, setAppStatusAC} from "@/store/redux/reducers/appReducer";
 import {Dispatch} from "redux";
 import {ResponseType} from "@/api/types";
 

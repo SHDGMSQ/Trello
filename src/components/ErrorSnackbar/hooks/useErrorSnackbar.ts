@@ -1,5 +1,5 @@
-import {useAppDispatch, useAppSelector} from "@/store/hooks/hooks";
-import {setAppErrorAC} from "@/store/reducers/appReducer";
+import {setAppErrorAC} from "@/store/redux/reducers/appReducer";
+import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
 
 export const useErrorSnackbar = () => {
   const error = useAppSelector(state => state.app.error);

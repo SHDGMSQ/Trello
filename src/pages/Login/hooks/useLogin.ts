@@ -1,6 +1,6 @@
 import {useFormik} from "formik";
-import {useAppDispatch, useAppSelector} from "@/store/hooks/hooks";
-import {loginTC} from "@/store/reducers/authReducer";
+import {useAppDispatch, useAppSelector} from "@/store/redux/hooks/hooks";
+import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();

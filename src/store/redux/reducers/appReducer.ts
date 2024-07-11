@@ -1,7 +1,7 @@
 import {AppStateType, RequestAppStatusType} from "@/app/types";
-import {AppThunk} from "@/store/types";
+import {AppThunk} from "@/store/redux/types";
 import {api} from "@/api/api";
-import {setIsLoggedInAC} from "@/store/reducers/authReducer";
+import {setIsLoggedInAC} from "@/store/redux/reducers/authReducer";
 import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 

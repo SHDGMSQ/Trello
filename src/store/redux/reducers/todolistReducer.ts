@@ -1,12 +1,12 @@
 import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {api} from "@/api/api";
 import {TodolistResponseType} from "@/api/types";
-import {AppThunk} from "@/store/types";
-import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/reducers/appReducer";
+import {AppThunk} from "@/store/redux/types";
+import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/redux/reducers/appReducer";
 import {RequestAppStatusType} from "@/app/types";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
-import {fetchTasksTC} from "@/store/reducers/taskReducer";
+import {fetchTasksTC} from "@/store/redux/reducers/taskReducer";
 
 const initialState: Array<TodolistType> = [];
 
