@@ -32,7 +32,7 @@ export const useTodolist = (props: TodolistPropsType) => {
     dispatch(changeFilterAC({todoId: id, value: "Completed"}));
   }, [dispatch, id]);
 
-  let tasksForTodolist = tasks || [];
+  let tasksForTodolist = tasks;
 
 
   if (filter === "Active") {

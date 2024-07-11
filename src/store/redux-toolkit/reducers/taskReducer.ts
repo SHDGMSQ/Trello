@@ -42,7 +42,7 @@ const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(addTodolistAC, (state, action) => {
       const {todolist} = action.payload;
-      //state[todolist.id] = [];
+      state[todolist.id] = [];
     });
     builder.addCase(removeTodolistAC, (state, action) => {
       const {todoId} = action.payload;
@@ -129,10 +129,3 @@ export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispa
       handleServerNetworkError(dispatch, err.message || "Network error");
     });
 };
-
-//types
-export type TasksActionsType =
-  | ReturnType<typeof setTasksAC>
-  | ReturnType<typeof addTaskAC>
-  | ReturnType<typeof changeTaskAC>
-  | ReturnType<typeof removeTaskAC>;
