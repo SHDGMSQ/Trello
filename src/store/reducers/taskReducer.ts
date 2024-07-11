@@ -2,7 +2,7 @@ import {TasksType, TaskType} from "@/components/Task/types";
 import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/reducers/todolistReducer";
 import {api} from "@/api/api";
 import {AppThunk} from "@/store/types";
-import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
+import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/reducers/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios/index";
 
@@ -44,7 +44,9 @@ export const taskReducer = (state: TasksType = initialState, action: TasksAction
       todolists.forEach((tl) => copyState[tl.id] = []);
       return copyState;
     }
-
+    case "APP/SET-EMPTY-DATA-VALUES": {
+      return {};
+    }
     default:
       return state;
   }
@@ -106,7 +108,7 @@ export const addTaskTC = (todoId: string, title: string): AppThunk => (dispatch)
         dispatch(addTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        handleServerAppError(dispatch, res.data)
+        handleServerAppError(dispatch, res.data);
       }
     })
     .catch((err: AxiosError) => {
@@ -122,7 +124,7 @@ export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk =>
         dispatch(changeTaskAC(todoId, item));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        handleServerAppError(dispatch, res.data)
+        handleServerAppError(dispatch, res.data);
       }
     })
     .catch((err: AxiosError) => {
@@ -153,4 +155,5 @@ export type TasksActionsType =
   | ReturnType<typeof removeTaskAC>
   | AddTodolistType
   | RemoveTodolistType
-  | SetTodolistsType;
+  | SetTodolistsType
+  | SetEmptyDataValuesType;

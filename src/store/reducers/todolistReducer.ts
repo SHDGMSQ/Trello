@@ -2,10 +2,11 @@ import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {api} from "@/api/api";
 import {TodolistResponseType} from "@/api/types";
 import {AppThunk} from "@/store/types";
-import {setAppErrorAC, setAppStatusAC} from "@/store/reducers/appReducer";
+import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/reducers/appReducer";
 import {RequestAppStatusType} from "@/app/types";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
+import {fetchTasksTC} from "@/store/reducers/taskReducer";
 
 const initialState: Array<TodolistType> = [];
 
@@ -34,6 +35,9 @@ export const todolistReducer = (state: Array<TodolistType> = initialState, actio
     case "TODOLISTS/CHANGE-TODOLIST-ENTITY-STATUS": {
       const {todoId, entityStatus} = action.payload;
       return state.map((tl) => tl.id === todoId ? {...tl, entityStatus} : tl);
+    }
+    case "APP/SET-EMPTY-DATA-VALUES": {
+      return [];
     }
     default:
       return state;
@@ -90,10 +94,16 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
       if (res.status === 200) {
         dispatch(setTodolistsAC(res.data));
         dispatch(setAppStatusAC("succeeded"));
+        return res.data;
       } else {
         dispatch(setAppErrorAC("Something went wrong when todos fetching!"));
         dispatch(setAppStatusAC("failed"));
       }
+    })
+    .then((todos) => {
+      todos.forEach((tl) => {
+        dispatch(fetchTasksTC(tl.id));
+      });
     })
     .catch((err: AxiosError) => {
       handleServerNetworkError(dispatch, err.message || "Network error");
@@ -156,7 +166,8 @@ export type TodolistActionsType =
   | ReturnType<typeof changeFilterAC>
   | ReturnType<typeof changeTodolistTitleAC>
   | ReturnType<typeof changeTodolistEntityStatusAC>
-  | SetTodolistsType;
+  | SetTodolistsType
+  | SetEmptyDataValuesType;
 
 export type AddTodolistType = ReturnType<typeof addTodolistAC>;
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>;

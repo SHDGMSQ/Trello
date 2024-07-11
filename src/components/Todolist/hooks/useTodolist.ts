@@ -1,5 +1,5 @@
-import {useCallback, useEffect} from "react";
-import {addTaskTC, fetchTasksTC} from "@/store/reducers/taskReducer";
+import {useCallback} from "react";
+import {addTaskTC} from "@/store/reducers/taskReducer";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {TaskStatuses} from "@/api/types";
 import {useAppDispatch} from "@/store/hooks/hooks";
@@ -9,10 +9,6 @@ export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
 
   const {id, title, filter, tasks, entityStatus} = props;
-
-  useEffect(() => {
-    dispatch(fetchTasksTC(id));
-  }, []);
 
   const removeTodolist = useCallback(() => {
     dispatch(removeTodolistTC(id));

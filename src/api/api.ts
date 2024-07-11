@@ -38,15 +38,15 @@ const tasksApi = {
 
 const authApi = {
   login(data: LoginType) {
-    return axios.post<any, AxiosResponse<ResponseType<{userId?: number}>>, LoginType>(`auth/login`, data);
+    return axios.post<any, AxiosResponse<ResponseType<{ userId?: number }>>, LoginType>(`auth/login`, data);
   },
   logout() {
-    return axios.delete<any, AxiosResponse<ResponseType>, {data: LoginType}>(`auth/login`);
+    return axios.delete<any, AxiosResponse<ResponseType>, { data: LoginType }>(`auth/login`);
   },
   me() {
-    return axios.get<any, AxiosResponse<ResponseType<{id: number, email: string, login: string}>>, {data: LoginType}>(`auth/me`);
+    return axios.get<any, AxiosResponse<ResponseType<{ id: number, email: string, login: string }>>, { data: LoginType }>(`auth/me`);
   },
-}
+};
 
 export const api = {
   todolistsApi,

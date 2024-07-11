@@ -2,7 +2,7 @@ import {AppStateType, RequestAppStatusType} from "@/app/types";
 import {AppThunk} from "@/store/types";
 import {api} from "@/api/api";
 import {setIsLoggedInAC} from "@/store/reducers/authReducer";
-import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
+import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 
 const initialState: AppStateType = {
@@ -40,6 +40,7 @@ export const setAppIsInitializedAC = (isInitialized: boolean) => ({
   type: "APP/SET-APP-IS-INITIALIZED",
   payload: {isInitialized}
 }) as const;
+export const setEmptyDataValuesAC = () => ({type: "APP/SET-EMPTY-DATA-VALUES", payload: {}}) as const;
 
 //thunks
 export const setIsInitializedAppTC = (): AppThunk => (dispatch) => {
@@ -60,3 +61,4 @@ export type AppActionsType =
   | ReturnType<typeof setAppStatusAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppIsInitializedAC>
+export type SetEmptyDataValuesType = ReturnType<typeof setEmptyDataValuesAC>;
