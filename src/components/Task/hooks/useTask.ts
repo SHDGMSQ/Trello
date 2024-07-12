@@ -16,7 +16,7 @@ export const useTask = (props: TaskPropsType) => {
   }, [dispatch, todoId]);
 
   const removeTask = useCallback(() => {
-    dispatch(removeTaskTC(todoId, task.id));
+    dispatch(removeTaskTC({todoId, taskId: task.id}));
   }, [dispatch, todoId, task.id]);
 
   const changeTaskTitle = useCallback((title: string) => {

@@ -2,13 +2,33 @@ import {TasksType, TaskType} from "@/components/Task/types";
 import {api} from "@/api/api";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "@/store/redux-toolkit/reducers/todolistReducer";
 import {setAppErrorAC, setAppStatusAC, setEmptyDataAC} from "@/store/redux-toolkit/reducers/appReducer";
 import {AppThunk} from "@/store/redux-toolkit/types";
 import {Draft} from "immer";
 
 const initialState: TasksType = {};
+
+interface RemoveTaskPayload {
+  todoId: string;
+  taskId: string;
+}
+
+export const removeTaskTC = createAsyncThunk<RemoveTaskPayload, RemoveTaskPayload>("tasks/removeTask", async (param: RemoveTaskPayload, thunkAPI) => {
+  thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
+  try {
+    const res = await api.tasksApi.removeTask(param.todoId, param.taskId);
+    if (res.data.resultCode === 0) {
+      thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}));
+      return {todoId: param.todoId, taskId: param.taskId};
+    } else {
+      handleServerAppError(thunkAPI.dispatch, res.data);
+    }
+  } catch (err) {
+    handleServerNetworkError(thunkAPI.dispatch, err.message || "Network error");
+  }
+})
 
 const tasksSlice = createSlice({
   name: "tasks",
@@ -30,14 +50,14 @@ const tasksSlice = createSlice({
         tasks[index] = {...tasks[index], ...task};
       }
     },
-    removeTaskAC: (state: Draft<TasksType>, action: PayloadAction<{ todoId: string, taskId: string }>) => {
-      const {todoId, taskId} = action.payload;
-      const tasks = state[todoId];
-      const index = tasks.findIndex(state => state.id === taskId);
-      if (index > -1) {
-        tasks.splice(index, 1);
-      }
-    },
+    // removeTaskAC: (state: Draft<TasksType>, action: PayloadAction<{ todoId: string, taskId: string }>) => {
+    //   const {todoId, taskId} = action.payload;
+    //   const tasks = state[todoId];
+    //   const index = tasks.findIndex(state => state.id === taskId);
+    //   if (index > -1) {
+    //     tasks.splice(index, 1);
+    //   }
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(addTodolistAC, (state, action) => {
@@ -57,13 +77,21 @@ const tasksSlice = createSlice({
     builder.addCase(setEmptyDataAC.type, () => {
       return {};
     });
+    builder.addCase(removeTaskTC.fulfilled, (state, action) => {
+      const {todoId, taskId} = action.payload;
+      const tasks = state[todoId];
+      const index = tasks.findIndex(state => state.id === taskId);
+      if (index > -1) {
+        tasks.splice(index, 1);
+      }
+    });
 
   },
 });
 
 export const tasksReducer = tasksSlice.reducer;
 
-export const {setTasksAC, addTaskAC, changeTaskAC, removeTaskAC} = tasksSlice.actions;
+export const {setTasksAC, addTaskAC, changeTaskAC} = tasksSlice.actions;
 
 //thunks
 export const fetchTasksTC = (todoId: string): AppThunk => (dispatch) => {
@@ -105,21 +133,6 @@ export const changeTaskTC = (todoId: string, updatedTask: TaskType): AppThunk =>
       if (res.data.resultCode === 0) {
         const {item} = res.data.data;
         dispatch(changeTaskAC({todoId, task: item}));
-        dispatch(setAppStatusAC({status: "succeeded"}));
-      } else {
-        handleServerAppError(dispatch, res.data);
-      }
-    })
-    .catch((err: AxiosError) => {
-      handleServerNetworkError(dispatch, err.message || "Network error");
-    });
-};
-export const removeTaskTC = (todoId: string, taskId: string): AppThunk => (dispatch) => {
-  dispatch(setAppStatusAC({status: "loading"}));
-  api.tasksApi.removeTask(todoId, taskId)
-    .then((res) => {
-      if (res.data.resultCode === 0) {
-        dispatch(removeTaskAC({todoId, taskId}));
         dispatch(setAppStatusAC({status: "succeeded"}));
       } else {
         handleServerAppError(dispatch, res.data);

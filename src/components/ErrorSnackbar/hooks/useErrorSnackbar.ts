@@ -1,5 +1,6 @@
 import {setAppErrorAC} from "@/store/redux/reducers/appReducer";
 import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
+import React from "react";
 
 export const useErrorSnackbar = () => {
   const error = useAppSelector(state => state.app.error);
