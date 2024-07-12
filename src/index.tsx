@@ -1,8 +1,8 @@
 import {createRoot} from "react-dom/client";
 import {Provider} from "react-redux";
-import {store} from "@/store/store";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {App} from "@/app/App";
+import {store} from "@/store/redux-toolkit/store";
 
 const root = document.getElementById("root");
 

@@ -1,13 +1,14 @@
 import {ChangeEvent, useCallback} from "react";
 import {TaskPropsType} from "@/components/Task/types";
-import {changeTaskTC, removeTaskTC} from "@/store/reducers/taskReducer";
 import {TaskStatuses} from "@/api/types";
-import {useAppDispatch} from "@/store/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
+import {changeTaskTC, removeTaskTC} from "@/store/redux-toolkit/reducers/taskReducer";
 
 export const useTask = (props: TaskPropsType) => {
   const {task, todoId, todoEntityStatus} = props;
 
   const dispatch = useAppDispatch();
+  const tasks = useAppSelector(state => state.tasks);
 
   const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const updatedTask = {...task, status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New};

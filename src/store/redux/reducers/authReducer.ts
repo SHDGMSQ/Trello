@@ -1,6 +1,6 @@
 import {InitialAuthStateType, LoginType} from "@/pages/Login/types";
-import {AppThunk} from "@/store/types";
-import {setAppStatusAC} from "@/store/reducers/appReducer";
+import {AppThunk} from "@/store/redux/types";
+import {setAppStatusAC} from "@/store/redux/reducers/appReducer";
 import {api} from "@/api/api";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";

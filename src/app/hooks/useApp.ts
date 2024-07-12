@@ -1,7 +1,7 @@
-import {useAppDispatch, useAppSelector} from "@/store/hooks/hooks";
 import {useCallback, useEffect} from "react";
-import {setIsInitializedAppTC} from "@/store/reducers/appReducer";
-import {logoutTC} from "@/store/reducers/authReducer";
+import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
+import {setIsInitializedAppTC} from "@/store/redux-toolkit/reducers/appReducer";
+import {logoutTC} from "@/store/redux-toolkit/reducers/authReducer";
 
 export const useApp = () => {
   const appStatus = useAppSelector(state => state.app.status);

@@ -1,9 +1,9 @@
 import {useCallback} from "react";
-import {addTaskTC} from "@/store/reducers/taskReducer";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {TaskStatuses} from "@/api/types";
-import {useAppDispatch} from "@/store/hooks/hooks";
-import {changeFilterAC, changeTodolistTitleTC, removeTodolistTC} from "@/store/reducers/todolistReducer";
+import {useAppDispatch} from "@/store/redux-toolkit/hooks/hooks";
+import {changeFilterAC, changeTodolistTitleTC, removeTodolistTC} from "@/store/redux-toolkit/reducers/todolistReducer";
+import {addTaskTC} from "@/store/redux-toolkit/reducers/taskReducer";
 
 export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
@@ -23,16 +23,17 @@ export const useTodolist = (props: TodolistPropsType) => {
   }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
-    dispatch(changeFilterAC(id, "All"));
+    dispatch(changeFilterAC({todoId: id, value: "All"}));
   }, [dispatch, id]);
   const onActiveClickHandler = useCallback(() => {
-    dispatch(changeFilterAC(id, "Active"));
+    dispatch(changeFilterAC({todoId: id, value: "Active"}));
   }, [dispatch, id]);
   const onCompletedClickHandler = useCallback(() => {
-    dispatch(changeFilterAC(id, "Completed"));
+    dispatch(changeFilterAC({todoId: id, value: "Completed"}));
   }, [dispatch, id]);
 
   let tasksForTodolist = tasks;
+
 
   if (filter === "Active") {
     tasksForTodolist = tasksForTodolist.filter(task => task.status === TaskStatuses.New);

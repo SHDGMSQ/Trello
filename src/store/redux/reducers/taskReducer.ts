@@ -1,8 +1,8 @@
 import {TasksType, TaskType} from "@/components/Task/types";
-import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/reducers/todolistReducer";
+import {AddTodolistType, RemoveTodolistType, SetTodolistsType,} from "@/store/redux/reducers/todolistReducer";
 import {api} from "@/api/api";
-import {AppThunk} from "@/store/types";
-import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/reducers/appReducer";
+import {AppThunk} from "@/store/redux/types";
+import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/redux/reducers/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios/index";
 
