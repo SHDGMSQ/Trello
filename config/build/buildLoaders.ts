@@ -8,6 +8,31 @@ export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
   const isDev = mode === "development";
   const isProd = mode === "production";
 
+  // const babelLoader = {
+  //   rules: [
+  //     {
+  //       test: /\.tsx?$/,
+  //       exclude: /node_modules/,
+  //       use: {
+  //         loader: "babel-loader",
+  //         options: {
+  //           presets: [
+  //             '@babel/preset-env',
+  //             "@babel/preset-typescript",
+  //             [
+  //               "@babel/preset-react",
+  //               {
+  //                 runtime: isDev ? "automatic": "classic"
+  //               }
+  //             ]
+  //
+  //           ]
+  //         }
+  //       }
+  //     }
+  //   ]
+  // }
+
   const svgLoader = {
     test: /\.svg$/i,
     issuer: /\.[jt]sx?$/,
