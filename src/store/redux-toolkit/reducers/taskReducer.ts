@@ -88,7 +88,7 @@ export const changeTaskTC = createAsyncThunk("tasks/changeTask", async (param: {
     const state = getState() as RootState;
     const task = state.tasks[param.todoId].find((t: TaskType) => t.id === param.taskId);
     if (!task) {
-      return
+      return rejectWithValue({error: "task not found"})
     }
 
     const updateTask: TaskResponseType = {

@@ -1,12 +1,10 @@
 import {FilterValuesType, TodolistType} from "@/components/Todolist/types";
 import {api} from "@/api/api";
-import {TodolistResponseType} from "@/api/types";
 import {RequestAppStatusType} from "@/app/types";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppThunk} from "@/store/redux-toolkit/types";
-import {setAppErrorAC, setAppStatusAC, setEmptyDataAC} from "@/store/redux-toolkit/reducers/appReducer";
+import {setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
 import {fetchTasksTC} from "@/store/redux-toolkit/reducers/taskReducer";
 import {Draft} from "immer";
 

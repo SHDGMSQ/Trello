@@ -1,6 +1,6 @@
-import {setAppErrorAC} from "@/store/redux/reducers/appReducer";
 import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
 import React from "react";
+import {setAppErrorAC} from "@/store/redux-toolkit/reducers/appReducer";
 
 export const useErrorSnackbar = () => {
   const error = useAppSelector(state => state.app.error);
@@ -10,7 +10,7 @@ export const useErrorSnackbar = () => {
     if (reason === "clickaway") {
       return;
     }
-    dispatch(setAppErrorAC(null));
+    dispatch(setAppErrorAC({error: null}));
   };
 
   return {

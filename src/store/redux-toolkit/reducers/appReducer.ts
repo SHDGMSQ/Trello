@@ -19,7 +19,7 @@ export const setIsInitializedAppTC = createAsyncThunk("app/setIsInitializedApp",
   try {
     const res = await api.authApi.me();
     if (res.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC({isLoggedIn: true}));
+      dispatch(setIsLoggedInAC());
     }
     return true;
   } catch (err) {
@@ -45,8 +45,6 @@ const appSlice = createSlice({
     setAppIsInitializedAC: (state) => {
       state.isInitialized = true;
     },
-    setEmptyDataAC: () => {
-    }
   },
   extraReducers: (builder) => {
     builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
@@ -57,4 +55,4 @@ const appSlice = createSlice({
 
 export const appReducer = appSlice.reducer;
 
-export const {setAppIsInitializedAC, setAppErrorAC, setAppStatusAC, setEmptyDataAC} = appSlice.actions;
+export const {setAppIsInitializedAC, setAppErrorAC, setAppStatusAC} = appSlice.actions;
