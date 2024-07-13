@@ -20,8 +20,9 @@ export const setIsInitializedAppTC = createAsyncThunk("app/setIsInitializedApp",
     const res = await api.authApi.me();
     if (res.data.resultCode === 0) {
       dispatch(setIsLoggedInAC());
+    } else {
+      return rejectWithValue({error: "Some initialized error"});
     }
-    return true;
   } catch (err) {
     const error: AxiosError = err;
     handleServerNetworkError(dispatch, err.message || "Network error");
@@ -42,9 +43,6 @@ const appSlice = createSlice({
       const {error} = action.payload;
       state.error = error;
     },
-    setAppIsInitializedAC: (state) => {
-      state.isInitialized = true;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
@@ -55,4 +53,4 @@ const appSlice = createSlice({
 
 export const appReducer = appSlice.reducer;
 
-export const {setAppIsInitializedAC, setAppErrorAC, setAppStatusAC} = appSlice.actions;
+export const {setAppErrorAC, setAppStatusAC} = appSlice.actions;

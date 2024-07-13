@@ -9,7 +9,9 @@
     "build:analyzer": "webpack --env mode=production analyzer=true",
     "tsc": "tsc",
     "start": "webpack serve",
-    "test": "cross-env jest --config config/jest/jest.config.ts --watch"
+    "test": "cross-env jest --config config/jest/jest.config.ts --watch",
+    "test:redux": "cross-env jest --config config/jest/jest.config.ts --watch --roots ../../src/tests/redux",
+    "test:rtk": "cross-env jest --config config/jest/jest.config.ts --watch --roots ../../src/tests/redux-toolkit"
   },
   "keywords": [],
   "author": "",
