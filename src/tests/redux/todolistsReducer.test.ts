@@ -1,141 +1,83 @@
-import {TasksType} from "@/components/Task/types";
-import {TaskPriorities, TaskStatuses} from "@/api/types";
-import {addTaskAC, changeTaskAC, removeTaskAC, setTasksAC, taskReducer} from "@/store/redux/reducers/taskReducer";
-import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "@/store/redux/reducers/todolistReducer";
+import {TodolistType} from "@/components/Todolist/types";
+import {
+  addTodolistAC,
+  changeFilterAC, changeTodolistEntityStatusAC, changeTodolistTitleAC,
+  removeTodolistAC,
+  setTodolistsAC,
+  todolistReducer
+} from "@/store/redux/reducers/todolistReducer";
 import {setEmptyDataValuesAC} from "@/store/redux/reducers/appReducer";
 
-let initialState: TasksType;
+let initialState: Array<TodolistType>;
 
 beforeEach(() => {
-  initialState = {
-    "todoId1": [
-      {
-        id: "1",
-        status: TaskStatuses.New,
-        title: "task",
-        addedDate: "",
-        deadline: "",
-        description: "",
-        order: "",
-        startDate: "",
-        todoListId: "todoId1",
-        priority: TaskPriorities.Low
-      }
-    ],
-    "todoId2": [
-      {
-        id: "1",
-        status: TaskStatuses.New,
-        title: "task2",
-        addedDate: "",
-        deadline: "",
-        description: "",
-        order: "",
-        startDate: "",
-        todoListId: "todoId2",
-        priority: TaskPriorities.Low
-      }
-    ],
-  };
+  initialState = [
+    {
+      id: "todoId1",
+      title: "first todo",
+      order: "",
+      addedDate: "",
+      entityStatus: "idle",
+      filter: "Active"
+    },
+    {
+      id: "todoId2",
+      title: "sec todo",
+      order: "",
+      addedDate: "",
+      entityStatus: "idle",
+      filter: "Active"
+    },
+  ];
 });
 
-describe("TASKS REDUCER TESTS", () => {
-  test("setTasksAC: correct task should be set to correct array", () => {
-    const result = taskReducer(initialState, setTasksAC("todoId2", [
-      {
-        id: "2",
-        title: "newTask",
-        description: "",
-        todoListId: "todoId2",
-        order: "",
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Hi,
-        startDate: "",
-        deadline: "",
-        addedDate: "",
-      }
+describe("TODOLISTS REDUCER TESTS", () => {
+  test("setTodolistsAC: todolists should be correctly added", () => {
+    const result = todolistReducer(initialState, setTodolistsAC([
+      {id: "todoId2", title: "new todo", order: "", addedDate: ""}
     ]));
-
-    expect(result["todoId1"].length).toBe(1);
-    expect(result["todoId2"].length).toBe(1);
-    expect(result["todoId2"][0].title).toBe("newTask");
-    expect(result["todoId1"][0].title).toBe("task");
+    expect(result.length).toBe(1);
+    expect(result[0].title).toBe("new todo");
+    expect(result[0].filter).toBe("All");
+    expect(result[0].entityStatus).toBe("idle");
   });
-  test("addTaskAC: correct task should be add to correct array", () => {
-    const result = taskReducer(initialState, addTaskAC("todoId2",
-      {
-        id: "2",
-        title: "newTask",
-        description: "",
-        todoListId: "todoId2",
-        order: "",
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Hi,
-        startDate: "",
-        deadline: "",
-        addedDate: "",
-      }
-    ));
-    expect(result["todoId1"].length).toBe(1);
-    expect(result["todoId2"].length).toBe(2);
-    expect(result["todoId2"][0].title).toBe("newTask");
-    expect(result["todoId2"][1].title).toBe("task2");
+  test("removeTodolistAC: correct todolist should be removed", () => {
+    const result = todolistReducer(initialState, removeTodolistAC("todoId2"));
+    expect(result.length).toBe(1);
+    expect(result[0].title).toBe("first todo");
   });
-  test("changeTaskAC: correct values should changed in correct task", () => {
-    const result = taskReducer(initialState, changeTaskAC("todoId1", {
-      id: "1",
-      status: TaskStatuses.Completed,
-      title: "new Task Title",
-      addedDate: "",
-      deadline: "",
-      description: "",
-      order: "",
-      startDate: "",
-      todoListId: "todoId1",
-      priority: TaskPriorities.Low
-    }));
-    expect(result["todoId1"].length).toBe(1);
-    expect(result["todoId2"].length).toBe(1);
-    expect(result["todoId1"][0].title).toBe("new Task Title");
-    expect(result["todoId2"][0].title).toBe("task2");
-    expect(result["todoId1"][0].status).toBe(TaskStatuses.Completed);
-    expect(result["todoId2"][0].status).toBe(TaskStatuses.New);
-  });
-  test("removeTaskAC: correct task should be removed", () => {
-    const result = taskReducer(initialState, removeTaskAC("todoId2", "1"));
-    expect(result["todoId1"].length).toBe(1);
-    expect(result["todoId2"].length).toBe(0);
-  });
-});
-
-describe("TASKS/TODOLISTS REDUCER TESTS", () => {
-  test("addTodolistAC: todolist should be correctly added to array", () => {
-    const result = taskReducer(initialState, addTodolistAC({
+  test("addTodolistAC: todolist should be added to correct place", () => {
+    const result = todolistReducer(initialState, addTodolistAC({
       id: "todoId3",
-      title: "newTodoTitle",
-      order: "",
+      title: "newTodo",
       addedDate: "",
+      order: ""
     }));
-    expect(result["todoId3"]).toBeDefined();
-    expect(result["todoId1"]).toBeDefined();
-    expect(result["todoId2"]).toBeDefined();
-    expect(result["todoId4"]).toBeUndefined();
+    expect(result.length).toBe(3);
+    expect(result[0].title).toBe("newTodo");
   });
-  test("removeTodolistAC: correct todolists should be removed", () => {
-    const result = taskReducer(initialState, removeTodolistAC("todoId2"));
-    expect(result["todoId1"]).toBeDefined();
-    expect(result["todoId2"]).toBeUndefined();
+  test("changeFilterAC: correct filter should be changed", () => {
+    const result = todolistReducer(initialState, changeFilterAC("todoId2", "Completed"));
+    expect(result[0].filter).toBe("Active");
+    expect(result[1].filter).toBe("Completed");
   });
-  test("setTodolistsAC: todolists should be set to correct place", () => {
-    const result = taskReducer(initialState, setTodolistsAC([{id: "todoId3",title: "todoTitle3", order: "", addedDate: ""},]));
-    expect(result["todoId1"][0].title).toBe("task");
-    expect(result["todoId3"]).toEqual([]);
+  test("changeTodolistTitleAC: todolist title should change in correct todolist", () => {
+    const result = todolistReducer(initialState, changeTodolistTitleAC("todoId2", "my new title"));
+    expect(result.length).toBe(2);
+    expect(result[0].title).toBe("first todo");
+    expect(result[1].title).toBe("my new title");
+  });
+  test("changeTodolistEntityStatusAC: entity status should be changed in correct todolist", () => {
+    const result = todolistReducer(initialState, changeTodolistEntityStatusAC("todoId1", "failed"));
+    expect(result.length).toBe(2);
+    expect(result[0].entityStatus).toBe("failed");
+    expect(result[1].entityStatus).toBe("idle");
   });
 });
 
-describe("TASKS/APP REDUCER TESTS", () => {
+describe("TODOLISTS/APP REDUCER TESTS", () => {
   test("setEmptyDataValuesAC: data must be correctly cleaned", () => {
-    const result = taskReducer(initialState, setEmptyDataValuesAC());
-    expect(result).toEqual({});
+    const result = todolistReducer(initialState, setEmptyDataValuesAC());
+    expect(result).toEqual([]);
   });
 });
