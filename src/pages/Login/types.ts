@@ -19,6 +19,6 @@ type RejectValuesType = {
   fieldsErrors: string[]
 }
 
-export type RejectedLoginType = {
+export type RejectedType = {
   rejectValue: RejectValuesType
 }
