@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 import {GetTasksResponseType, ResponseType, TaskResponseType, TodolistResponseType,} from "@/api/types";
 import {LoginType} from "@/pages/Login/types";
+import {UpdateTaskDataType} from "@/components/Task/types";
 
 axios.defaults.headers.common["API-KEY"] = "b365fbe8-0446-4f2a-ad5f-3c9421879b5e";
 axios.defaults.withCredentials = true;

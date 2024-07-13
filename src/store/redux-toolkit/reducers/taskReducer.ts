@@ -1,4 +1,4 @@
-import {RemoveTaskPayload, TasksType, TaskType} from "@/components/Task/types";
+import {RemoveTaskPayload, TasksType, TaskType, UpdateTaskDataType, UpdateTaskModelType} from "@/components/Task/types";
 import {api} from "@/api/api";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
@@ -8,6 +8,8 @@ import {
 } from "@/store/redux-toolkit/reducers/todolistReducer";
 import {setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
 import {RejectedType} from "@/pages/Login/types";
+import {RootState} from "@/store/redux-toolkit/types";
+import {TaskResponseType} from "@/api/types";
 
 const initialState: TasksType = {};
 
@@ -76,13 +78,34 @@ export const addTaskTC = createAsyncThunk("tasks/addTask", async (param: {todoId
   }
 });
 
-export const changeTaskTC = createAsyncThunk("tasks/changeTask", async (param: {todoId: string, updatedTask: TaskType}, {
+export const changeTaskTC = createAsyncThunk("tasks/changeTask", async (param: {todoId: string, taskId: string, model: UpdateTaskModelType}, {
   dispatch,
-  rejectWithValue
+  rejectWithValue,
+  getState
 }) => {
   dispatch(setAppStatusAC({status: "loading"}));
   try {
-    const res = await api.tasksApi.updateTask(param.todoId, param.updatedTask);
+    const state = getState() as RootState;
+    const task = state.tasks[param.todoId].find((t: TaskType) => t.id === param.taskId);
+    if (!task) {
+      return
+    }
+
+    const updateTask: TaskResponseType = {
+      status: task.status,
+      id: task.id,
+      todoListId: task.todoListId,
+      order: task.order,
+      addedDate: task.addedDate,
+      title: task.title,
+      deadline: task.deadline,
+      description: task.description,
+      priority: task.priority,
+      startDate: task.startDate,
+      ...param.model,
+    }
+
+    const res = await api.tasksApi.updateTask(param.todoId, updateTask);
     if (res.data.resultCode === 0) {
       const {item} = res.data.data;
       dispatch(setAppStatusAC({status: "succeeded"}));

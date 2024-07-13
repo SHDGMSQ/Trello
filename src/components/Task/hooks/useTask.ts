@@ -11,8 +11,9 @@ export const useTask = (props: TaskPropsType) => {
   const tasks = useAppSelector(state => state.tasks);
 
   const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const updatedTask = {...task, status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New};
-    dispatch(changeTaskTC({todoId, updatedTask}));
+    const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
+    const taskId = task.id
+    dispatch(changeTaskTC({todoId, taskId, model: {status}}));
   }, [dispatch, todoId]);
 
   const removeTask = useCallback(() => {
@@ -20,8 +21,8 @@ export const useTask = (props: TaskPropsType) => {
   }, [dispatch, todoId, task.id]);
 
   const changeTaskTitle = useCallback((title: string) => {
-    const updatedTask = {...task, title};
-    dispatch(changeTaskTC({todoId, updatedTask}));
+    const taskId = task.id;
+    dispatch(changeTaskTC({todoId, taskId, model: {title}}));
   }, [dispatch, todoId]);
 
   return {

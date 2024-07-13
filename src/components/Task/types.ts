@@ -1,4 +1,4 @@
-import {TaskResponseType} from "@/api/types";
+import {TaskPriorities, TaskResponseType, TaskStatuses} from "@/api/types";
 import {RequestAppStatusType} from "@/app/types";
 
 export type TasksType = {
@@ -16,4 +16,22 @@ export type TaskPropsType = {
 export type RemoveTaskPayload = {
   todoId: string;
   taskId: string;
+}
+
+export type UpdateTaskModelType = {
+  title?: string
+  description?: string | null
+  status?: TaskStatuses
+  priority?: TaskPriorities
+  startDate?: string | null
+  deadline?: string | null
+}
+
+export type UpdateTaskDataType = {
+  title: string
+  description: string | null
+  status: TaskStatuses
+  priority: TaskPriorities
+  startDate: string | null
+  deadline: string | null
 }
