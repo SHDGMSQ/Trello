@@ -4,7 +4,7 @@ import {api} from "@/api/api";
 import {AppThunk} from "@/store/redux/types";
 import {setAppErrorAC, setAppStatusAC, SetEmptyDataValuesType} from "@/store/redux/reducers/appReducer";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
-import {AxiosError} from "axios/index";
+import {AxiosError} from "axios";
 
 const initialState: TasksType = {};
 
