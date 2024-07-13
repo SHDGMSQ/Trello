@@ -19,7 +19,7 @@ export const useTodolist = (props: TodolistPropsType) => {
   }, [dispatch, id]);
 
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskTC(id, title));
+    dispatch(addTaskTC({todoId: id, title}));
   }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
