@@ -7,3 +7,18 @@ export type LoginType = {
 export type InitialAuthStateType = {
   isLoggedIn: boolean;
 }
+
+export type FormValuesType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+type RejectValuesType = {
+  errors: string[],
+  fieldsErrors: string[]
+}
+
+export type RejectedType = {
+  rejectValue: RejectValuesType
+}

@@ -15,11 +15,11 @@ export const useTodolist = (props: TodolistPropsType) => {
   }, [dispatch, id]);
 
   const changeTodolistTitle = useCallback((title: string) => {
-    dispatch(changeTodolistTitleTC(id, title));
+    dispatch(changeTodolistTitleTC({todoId: id, title}));
   }, [dispatch, id]);
 
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskTC(id, title));
+    dispatch(addTaskTC({todoId: id, title}));
   }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
@@ -32,7 +32,7 @@ export const useTodolist = (props: TodolistPropsType) => {
     dispatch(changeFilterAC({todoId: id, value: "Completed"}));
   }, [dispatch, id]);
 
-  let tasksForTodolist = tasks;
+  let tasksForTodolist = tasks || [];
 
 
   if (filter === "Active") {

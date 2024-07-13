@@ -1,7 +1,7 @@
 export type TodolistResponseType = {
   addedDate: string;
   id: string;
-  order: number;
+  order: string;
   title: string
 }
 
@@ -23,7 +23,7 @@ export type TaskResponseType = {
   title: string;
   description: string | null;
   todoListId: string;
-  order: number;
+  order: string;
   status: TaskStatuses;
   priority: TaskPriorities;
   startDate: string | null;

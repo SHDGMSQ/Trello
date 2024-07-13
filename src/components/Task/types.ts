@@ -12,3 +12,8 @@ export type TaskPropsType = {
   todoId: string;
   todoEntityStatus: RequestAppStatusType;
 }
+
+export type RemoveTaskPayload = {
+  todoId: string;
+  taskId: string;
+}

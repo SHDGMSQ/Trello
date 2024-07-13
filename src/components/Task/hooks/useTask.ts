@@ -12,16 +12,16 @@ export const useTask = (props: TaskPropsType) => {
 
   const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const updatedTask = {...task, status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New};
-    dispatch(changeTaskTC(todoId, updatedTask));
+    dispatch(changeTaskTC({todoId, updatedTask}));
   }, [dispatch, todoId]);
 
   const removeTask = useCallback(() => {
-    dispatch(removeTaskTC(todoId, task.id));
+    dispatch(removeTaskTC({todoId, taskId: task.id}));
   }, [dispatch, todoId, task.id]);
 
   const changeTaskTitle = useCallback((title: string) => {
     const updatedTask = {...task, title};
-    dispatch(changeTaskTC(todoId, updatedTask));
+    dispatch(changeTaskTC({todoId, updatedTask}));
   }, [dispatch, todoId]);
 
   return {
