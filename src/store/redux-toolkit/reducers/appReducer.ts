@@ -3,7 +3,7 @@ import {api} from "@/api/api";
 import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setIsLoggedInAC} from "@/store/redux-toolkit/reducers/authReducer";
+import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
 
 const initialState: AppStateType = {
   status: "idle",
@@ -19,9 +19,9 @@ export const setIsInitializedAppTC = createAsyncThunk("app/setIsInitializedApp",
   try {
     const res = await api.authApi.me();
     if (res.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC());
+      dispatch(loginTC.fulfilled(undefined, "requestId", undefined));
     } else {
-      return rejectWithValue({error: "Some initialized error"});
+      //return rejectWithValue({error: "Some initialized error"});
     }
   } catch (err) {
     const error: AxiosError = err;
@@ -48,6 +48,9 @@ const appSlice = createSlice({
     builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
       state.isInitialized = true;
     });
+    // builder.addCase(setIsInitializedAppTC.rejected, (state) => {
+    //   state.isInitialized = true;
+    // });
   }
 });
 

@@ -51,9 +51,9 @@ const authSlice = createSlice({
     isLoggedIn: false
   },
   reducers: {
-    setIsLoggedInAC: (state) => {
-      state.isLoggedIn = true;
-    },
+    // setIsLoggedInAC: (state) => {
+    //   state.isLoggedIn = true;
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(loginTC.fulfilled, (state) => {
@@ -66,6 +66,3 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer;
-
-//actions
-export const {setIsLoggedInAC} = authSlice.actions;
