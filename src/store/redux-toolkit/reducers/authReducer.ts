@@ -3,7 +3,7 @@ import {api} from "@/api/api";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
+import {clearData, setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
 
 const initialState: InitialAuthStateType = {
   isLoggedIn: false,
@@ -33,6 +33,7 @@ export const logoutTC = createAsyncThunk("auth/logout", async (_, {dispatch, rej
     const res = await api.authApi.logout();
     if (res.data.resultCode === 0) {
       dispatch(setAppStatusAC({status: "succeeded"}));
+      dispatch(clearData([], {}));
       return {isLoggedIn: false};
     } else {
       handleServerAppError(dispatch, res.data);
@@ -51,9 +52,9 @@ const authSlice = createSlice({
     isLoggedIn: false
   },
   reducers: {
-    setIsLoggedInAC: (state) => {
-      state.isLoggedIn = true;
-    },
+    // setIsLoggedInAC: (state) => {
+    //   state.isLoggedIn = true;
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(loginTC.fulfilled, (state) => {
@@ -66,6 +67,3 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer;
-
-//actions
-export const {setIsLoggedInAC} = authSlice.actions;

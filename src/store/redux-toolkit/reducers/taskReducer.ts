@@ -6,7 +6,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
   addTodolistTC, fetchTodolistsTC, removeTodolistTC,
 } from "@/store/redux-toolkit/reducers/todolistReducer";
-import {setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
+import {clearData, setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
 import {RejectedType} from "@/pages/Login/types";
 import {RootState} from "@/store/redux-toolkit/types";
 import {TaskResponseType} from "@/api/types";
@@ -163,6 +163,9 @@ const tasksSlice = createSlice({
       if (index > -1) {
         tasks[index] = {...tasks[index], ...task};
       }
+    });
+    builder.addCase(clearData, (state, action) => {
+      return action.payload.tasks;
     })
   },
 });

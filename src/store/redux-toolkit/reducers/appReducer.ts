@@ -2,8 +2,8 @@ import {AppStateType, RequestAppStatusType} from "@/app/types";
 import {api} from "@/api/api";
 import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setIsLoggedInAC} from "@/store/redux-toolkit/reducers/authReducer";
+import {createAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
 
 const initialState: AppStateType = {
   status: "idle",
@@ -19,9 +19,10 @@ export const setIsInitializedAppTC = createAsyncThunk("app/setIsInitializedApp",
   try {
     const res = await api.authApi.me();
     if (res.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC());
+      dispatch(loginTC.fulfilled(undefined, "requestId", undefined));
+    } else {
+      //return rejectWithValue({error: "Some initialized error"});
     }
-    return true;
   } catch (err) {
     const error: AxiosError = err;
     handleServerNetworkError(dispatch, err.message || "Network error");
@@ -42,9 +43,6 @@ const appSlice = createSlice({
       const {error} = action.payload;
       state.error = error;
     },
-    setAppIsInitializedAC: (state) => {
-      state.isInitialized = true;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
@@ -53,6 +51,15 @@ const appSlice = createSlice({
   }
 });
 
+export const clearData = createAction("app/clearData", (todolists, tasks) => {
+  return {
+    payload: {
+      todolists,
+      tasks,
+    }
+  }
+});
+
 export const appReducer = appSlice.reducer;
 
-export const {setAppIsInitializedAC, setAppErrorAC, setAppStatusAC} = appSlice.actions;
+export const {setAppErrorAC, setAppStatusAC} = appSlice.actions;
