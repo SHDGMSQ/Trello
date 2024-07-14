@@ -46,7 +46,7 @@ beforeEach(() => {
 });
 
 describe("TASKS REDUCER TESTS", () => {
-  test("setTasksAC: correct task should be set to correct array", () => {
+  test("fetchTasksAC: correct task should be set to correct array", () => {
     const payload = {tasks: [
         {
           id: "2",
@@ -124,7 +124,7 @@ describe("TASKS/TODOLISTS REDUCER TESTS", () => {
     expect(result["todoId1"]).toBeDefined();
     expect(result["todoId2"]).toBeUndefined();
   });
-  test("setTodolistsAC: todolists should be set to correct place", () => {
+  test("fetchTodolistsAC: todolists should be set to correct place", () => {
     const payload = [{id: "todoId3",title: "todoTitle3", order: "", addedDate: ""},]
     const result = tasksReducer(initialState, fetchTodolistsTC.fulfilled({todolists: payload}, "requestId", undefined));
     expect(result["todoId1"][0].title).toBe("task");
