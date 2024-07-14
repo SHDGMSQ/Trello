@@ -2,7 +2,7 @@ import {AppStateType, RequestAppStatusType} from "@/app/types";
 import {api} from "@/api/api";
 import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
 
 const initialState: AppStateType = {
@@ -48,9 +48,15 @@ const appSlice = createSlice({
     builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
       state.isInitialized = true;
     });
-    // builder.addCase(setIsInitializedAppTC.rejected, (state) => {
-    //   state.isInitialized = true;
-    // });
+  }
+});
+
+export const clearData = createAction("app/clearData", (todolists, tasks) => {
+  return {
+    payload: {
+      todolists,
+      tasks,
+    }
   }
 });
 

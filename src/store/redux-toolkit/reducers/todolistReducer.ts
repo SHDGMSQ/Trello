@@ -4,7 +4,7 @@ import {RequestAppStatusType} from "@/app/types";
 import {handleServerAppError, handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
+import {clearData, setAppStatusAC} from "@/store/redux-toolkit/reducers/appReducer";
 import {fetchTasksTC} from "@/store/redux-toolkit/reducers/taskReducer";
 import {Draft} from "immer";
 
@@ -124,6 +124,9 @@ const todolistsSlice = createSlice({
       const {todoId, title} = action.payload;
       const index = state.findIndex(el => el.id === todoId);
       state[index].title = title;
+    })
+    builder.addCase(clearData, (state, action) => {
+      return action.payload.todolists;
     })
   }
 });
