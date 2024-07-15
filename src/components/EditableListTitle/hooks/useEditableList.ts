@@ -44,7 +44,7 @@ export const useEditableList = (props: EditableListPropsType) => {
     opacity: isEditMode ? 1 : 0,
     background: "transparent",
     boxShadow: "none",
-    fontWeight: 500,
+    fontWeight: 600,
     resize: "none",
     overflowWrap: "break-word",
     backgroundColor: "#fff",

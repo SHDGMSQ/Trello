@@ -1,14 +1,14 @@
-import {memo} from "react";
+import React, {memo} from "react";
 import {Task} from "@/components/Task/Task";
 import styles from "./Todolist.module.scss";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
-import {Grid, IconButton, Paper} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import {Grid, Paper} from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {useTodolist} from "@/components/Todolist/hooks/useTodolist";
 import {EditableListTitle} from "@/components/EditableListTitle/EditableListTitle";
+import {TodolistPopup} from "@/components/TodolistPopup/TodolistPopup";
 
 export const Todolist = memo((props: TodolistPropsType) => {
 
@@ -23,7 +23,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
     filter,
     id,
     title,
-    entityStatus
+    entityStatus,
   } = useTodolist(props);
 
   return (
@@ -32,9 +32,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
         <div className={styles.container}>
           <div className={styles.todoHeader}>
             <EditableListTitle title={title} changeTitle={changeTodolistTitleHandler} disabled={entityStatus === "loading"}/>
-            <IconButton aria-label="delete" onClick={removeTodolistHandler} disabled={entityStatus === "loading"}>
-              <DeleteIcon/>
-            </IconButton>
+            <TodolistPopup entityStatus={entityStatus}/>
           </div>
           <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"}/>
           {
