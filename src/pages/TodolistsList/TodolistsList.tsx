@@ -8,7 +8,7 @@ export const TodolistsList = () => {
   const {todolists, tasks, addTodolistHandler, isLoggedIn} = useTodolistsList();
 
   if (!isLoggedIn) {
-     return <Navigate to={"/login"}/>
+    return <Navigate to={"/login"}/>;
   }
 
   return (
@@ -19,17 +19,14 @@ export const TodolistsList = () => {
       <Grid container spacing={4} padding={2}>
         {
           todolists.map((tl) =>
-            <Grid key={tl.id} item>
-              <Paper elevation={3}>
-                <Todolist
-                  id={tl.id}
-                  tasks={tasks[tl.id]}
-                  title={tl.title}
-                  filter={tl.filter}
-                  entityStatus={tl.entityStatus}
-                />
-              </Paper>
-            </Grid>
+            <Todolist
+              key={tl.id}
+              id={tl.id}
+              tasks={tasks[tl.id]}
+              title={tl.title}
+              filter={tl.filter}
+              entityStatus={tl.entityStatus}
+            />
           )
         }
       </Grid>
