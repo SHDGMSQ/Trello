@@ -1,22 +1,49 @@
 import * as React from "react";
+import {memo, useCallback} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {IconButton} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import styles from "./TodolistPopup.module.scss";
 import Popover from "@mui/material/Popover";
 import {ListPopupPropsType} from "@/components/TodolistPopup/types";
 import {useTodolistPopup} from "@/components/TodolistPopup/hooks/useTodolistPopup";
-import {memo} from "react";
-import {DeletePopup} from "@/components/DeletePopup/DeletePopup";
+import {DeleteModal} from "@/components/DeletePopup/DeleteModal";
+import {ModalTitle} from "@/components/ModalTitle/ModalTitle";
 
+//styles
+const listMenuIconStyle = {
+  "&.MuiButtonBase-root": {
+    width: "32px",
+    height: "32px",
+    borderRadius: "8px"
+  }
+};
+const listIconStyle = {
+  width: "16px",
+  height: "16px"
+};
+const popoverStyles = {
+  "& .MuiPaper-root": {
+    width: "250px",
+    fontSize: "14px",
+    borderRadius: "8px",
+    marginTop: "8px"
+  },
+};
+const addCardMenuStyles = {
+  fontSize: "14px",
+  fontWeight: 400,
+  lineHeight: "20px",
+};
+const deleteListMenuStyles = {
+  fontSize: "14px",
+  fontWeight: 400,
+  lineHeight: "20px",
+  color: "red"
+};
 
 export const TodolistPopup = memo((props: ListPopupPropsType) => {
 
-  const {anchorEl, id, addCardMenuStyles, listMenuIconStyle, deleteListMenuStyles, closeButtonStyles, popoverStyles, handleClose, handleClick, listIconStyle, closeIconStyles, open, entityStatus} = useTodolistPopup(props);
-
-  const [showDeletePopup, setShowDeletePopup] = React.useState(false);
-
+  const {anchorEl, todoId, id, handleClose, handleClick, open, entityStatus, onDeleteMenuHandler, showDeleteModal, setShowModal, removeTodolist} = useTodolistPopup(props);
 
   return (
     <div>
@@ -42,18 +69,12 @@ export const TodolistPopup = memo((props: ListPopupPropsType) => {
         }}
         sx={popoverStyles}
       >
-        <div className={styles.header}>
-          <h2>List actions</h2>
-          <IconButton sx={closeButtonStyles}>
-            <CloseIcon sx={closeIconStyles} onClick={handleClose}/>
-          </IconButton>
-        </div>
+        <ModalTitle title="List actions" handleClose={handleClose}/>
         <MenuItem onClick={() => {
         }} sx={addCardMenuStyles}>Add card</MenuItem>
-        <MenuItem onClick={() => {
-        }} sx={deleteListMenuStyles}>Delete this list</MenuItem>
+        <MenuItem onClick={onDeleteMenuHandler} sx={deleteListMenuStyles}>Delete this list</MenuItem>
       </Popover>
-      <DeletePopup entityStatus={entityStatus}/>
+      <DeleteModal showModal={showDeleteModal} setShowModal={setShowModal} todoId={todoId} removeTodolist={removeTodolist}/>
     </div>
   );
 });

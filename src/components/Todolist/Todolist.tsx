@@ -32,7 +32,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
         <div className={styles.container}>
           <div className={styles.todoHeader}>
             <EditableListTitle title={title} changeTitle={changeTodolistTitleHandler} disabled={entityStatus === "loading"}/>
-            <TodolistPopup entityStatus={entityStatus}/>
+            <TodolistPopup entityStatus={entityStatus} todoId={id} removeTodolist={removeTodolistHandler}/>
           </div>
           <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"}/>
           {
