@@ -2,34 +2,34 @@ import {useCallback} from "react";
 import {TodolistPropsType} from "@/components/Todolist/types";
 import {TaskStatuses} from "@/api/types";
 import {useAppDispatch} from "@/store/redux-toolkit/hooks/hooks";
-import {changeFilterAC, changeTodolistTitleTC, removeTodolistTC} from "@/store/redux-toolkit/reducers/todolistReducer";
-import {addTaskTC} from "@/store/redux-toolkit/reducers/taskReducer";
+import {changeFilter, changeTodolistTitle, removeTodolist} from "@/store/redux-toolkit/reducers/todolistReducer";
+import {addTask} from "@/store/redux-toolkit/reducers/taskReducer";
 
 export const useTodolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
 
   const {id, title, filter, tasks, entityStatus} = props;
 
-  const removeTodolist = useCallback(() => {
-    dispatch(removeTodolistTC(id));
+  const removeTodolistHandler = useCallback(() => {
+    dispatch(removeTodolist(id));
   }, [dispatch, id]);
 
-  const changeTodolistTitle = useCallback((title: string) => {
-    dispatch(changeTodolistTitleTC({todoId: id, title}));
+  const changeTodolistTitleHandler = useCallback((title: string) => {
+    dispatch(changeTodolistTitle({todoId: id, title}));
   }, [dispatch, id]);
 
-  const addTask = useCallback((title: string) => {
-    dispatch(addTaskTC({todoId: id, title}));
+  const addTaskHandler = useCallback((title: string) => {
+    dispatch(addTask({todoId: id, title}));
   }, [dispatch, id]);
 
   const onAllClickHandler = useCallback(() => {
-    dispatch(changeFilterAC({todoId: id, value: "All"}));
+    dispatch(changeFilter({todoId: id, value: "All"}));
   }, [dispatch, id]);
   const onActiveClickHandler = useCallback(() => {
-    dispatch(changeFilterAC({todoId: id, value: "Active"}));
+    dispatch(changeFilter({todoId: id, value: "Active"}));
   }, [dispatch, id]);
   const onCompletedClickHandler = useCallback(() => {
-    dispatch(changeFilterAC({todoId: id, value: "Completed"}));
+    dispatch(changeFilter({todoId: id, value: "Completed"}));
   }, [dispatch, id]);
 
   let tasksForTodolist = tasks || [];
@@ -48,9 +48,9 @@ export const useTodolist = (props: TodolistPropsType) => {
     onCompletedClickHandler,
     onActiveClickHandler,
     onAllClickHandler,
-    changeTodolistTitle,
-    removeTodolist,
-    addTask,
+    changeTodolistTitleHandler,
+    removeTodolistHandler,
+    addTaskHandler,
     filter,
     id,
     title,

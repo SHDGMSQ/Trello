@@ -1,7 +1,7 @@
 import {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
-import {setIsInitializedAppTC} from "@/store/redux-toolkit/reducers/appReducer";
-import {logoutTC} from "@/store/redux-toolkit/reducers/authReducer";
+import {setIsInitializedApp} from "@/store/redux-toolkit/reducers/appReducer";
+import {logout} from "@/store/redux-toolkit/reducers/authReducer";
 
 export const useApp = () => {
   const appStatus = useAppSelector(state => state.app.status);
@@ -10,11 +10,11 @@ export const useApp = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
 
   useEffect(() => {
-    dispatch(setIsInitializedAppTC());
+    dispatch(setIsInitializedApp());
   }, []);
 
   const onClickLogOut = useCallback( () => {
-    dispatch(logoutTC());
+    dispatch(logout());
   }, [dispatch]);
 
   return {

@@ -1,13 +1,13 @@
 import {TasksType} from "@/components/Task/types";
 import {TaskPriorities, TaskStatuses} from "@/api/types";
 import {
-  addTaskTC,
-  changeTaskTC,
-  fetchTasksTC,
-  removeTaskTC,
+  addTask,
+  changeTask,
+  fetchTasks,
+  removeTask,
   tasksReducer
 } from "@/store/redux-toolkit/reducers/taskReducer";
-import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "@/store/redux-toolkit/reducers/todolistReducer";
+import {addTodolist, fetchTodolists, removeTodolist} from "@/store/redux-toolkit/reducers/todolistReducer";
 import {clearData} from "@/store/redux-toolkit/reducers/appReducer";
 
 let initialState: TasksType;
@@ -46,7 +46,7 @@ beforeEach(() => {
 });
 
 describe("TASKS REDUCER TESTS", () => {
-  test("fetchTasksAC: correct task should be set to correct array", () => {
+  test("fetchTasks: correct task should be set to correct array", () => {
     const payload = {tasks: [
         {
           id: "2",
@@ -61,14 +61,14 @@ describe("TASKS REDUCER TESTS", () => {
           addedDate: "",
         }
       ], todoId: "todoId2"};
-    const result = tasksReducer(initialState, fetchTasksTC.fulfilled(payload, "requestId", "todoId2"));
+    const result = tasksReducer(initialState, fetchTasks.fulfilled(payload, "requestId", "todoId2"));
 
     expect(result["todoId1"].length).toBe(1);
     expect(result["todoId2"].length).toBe(1);
     expect(result["todoId2"][0].title).toBe("newTask");
     expect(result["todoId1"][0].title).toBe("task");
   });
-  test("addTaskAC: correct task should be add to correct array", () => {
+  test("addTask: correct task should be add to correct array", () => {
     const payload = {todoId: "todoId2", task: {id: "2",
         title: "newTask",
         description: "",
@@ -80,16 +80,16 @@ describe("TASKS REDUCER TESTS", () => {
         deadline: "",
         addedDate: "",}}
 
-    const result = tasksReducer(initialState, addTaskTC.fulfilled(payload, "requestId", {todoId: "todoId2", title: "newTask"}));
+    const result = tasksReducer(initialState, addTask.fulfilled(payload, "requestId", {todoId: "todoId2", title: "newTask"}));
     expect(result["todoId1"].length).toBe(1);
     expect(result["todoId2"].length).toBe(2);
     expect(result["todoId2"][0].title).toBe("newTask");
     expect(result["todoId2"][1].title).toBe("task2");
   });
-  test("changeTaskAC: correct values should changed in correct task", () => {
+  test("changeTask: correct values should changed in correct task", () => {
     const data = {todoId: "todoId1", taskId: "1", model: {status: TaskStatuses.Completed, title: "new Task Title"}};
     const payload = {todoId: "todoId1", task: {id: "1", title: "new Task Title", description: "", todoListId: "todoId1", order: "", status: TaskStatuses.Completed, priority: TaskPriorities.Low, startDate: "", deadline: "", addedDate: ""}};
-    const result = tasksReducer(initialState, changeTaskTC.fulfilled(payload, "requestId", data));
+    const result = tasksReducer(initialState, changeTask.fulfilled(payload, "requestId", data));
     expect(result["todoId1"].length).toBe(1);
     expect(result["todoId2"].length).toBe(1);
     expect(result["todoId1"][0].title).toBe("new Task Title");
@@ -97,36 +97,36 @@ describe("TASKS REDUCER TESTS", () => {
     expect(result["todoId1"][0].status).toBe(TaskStatuses.Completed);
     expect(result["todoId2"][0].status).toBe(TaskStatuses.New);
   });
-  test("removeTaskAC: correct task should be removed", () => {
+  test("removeTask: correct task should be removed", () => {
     const payload = {todoId: "todoId2", taskId: "1"};
-    const result = tasksReducer(initialState, removeTaskTC.fulfilled(payload, "requestId", payload));
+    const result = tasksReducer(initialState, removeTask.fulfilled(payload, "requestId", payload));
     expect(result["todoId1"].length).toBe(1);
     expect(result["todoId2"].length).toBe(0);
   });
 });
 
 describe("TASKS/TODOLISTS REDUCER TESTS", () => {
-  test("addTodolistAC: todolist should be correctly added to array", () => {
+  test("addTodolist: todolist should be correctly added to array", () => {
     const payload = {
       id: "todoId3",
       title: "newTodoTitle",
       order: "",
       addedDate: "",
     }
-    const result = tasksReducer(initialState, addTodolistTC.fulfilled({todolist: payload}, "requestId", "newTodoTitle"));
+    const result = tasksReducer(initialState, addTodolist.fulfilled({todolist: payload}, "requestId", "newTodoTitle"));
     expect(result["todoId3"]).toBeDefined();
     expect(result["todoId1"]).toBeDefined();
     expect(result["todoId2"]).toBeDefined();
     expect(result["todoId4"]).toBeUndefined();
   });
-  test("removeTodolistAC: correct todolists should be removed", () => {
-    const result = tasksReducer(initialState, removeTodolistTC.fulfilled({todoId: "todoId2"}, "requestId", "todoId2"));
+  test("removeTodolist: correct todolists should be removed", () => {
+    const result = tasksReducer(initialState, removeTodolist.fulfilled({todoId: "todoId2"}, "requestId", "todoId2"));
     expect(result["todoId1"]).toBeDefined();
     expect(result["todoId2"]).toBeUndefined();
   });
-  test("fetchTodolistsAC: todolists should be set to correct place", () => {
+  test("fetchTodolists: todolists should be set to correct place", () => {
     const payload = [{id: "todoId3",title: "todoTitle3", order: "", addedDate: ""},]
-    const result = tasksReducer(initialState, fetchTodolistsTC.fulfilled({todolists: payload}, "requestId", undefined));
+    const result = tasksReducer(initialState, fetchTodolists.fulfilled({todolists: payload}, "requestId", undefined));
     expect(result["todoId1"][0].title).toBe("task");
     expect(result["todoId3"]).toEqual([]);
   });

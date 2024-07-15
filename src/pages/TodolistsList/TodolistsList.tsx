@@ -5,7 +5,7 @@ import {AddItemForm} from "@/components/AddItemForm/AddItemForm";
 import {Navigate} from "react-router-dom";
 
 export const TodolistsList = () => {
-  const {todolists, tasks, addTodolist, isLoggedIn} = useTodolistsList();
+  const {todolists, tasks, addTodolistHandler, isLoggedIn} = useTodolistsList();
 
   if (!isLoggedIn) {
      return <Navigate to={"/login"}/>
@@ -14,7 +14,7 @@ export const TodolistsList = () => {
   return (
     <div>
       <Grid container padding={2}>
-        <AddItemForm addItem={addTodolist}/>
+        <AddItemForm addItem={addTodolistHandler}/>
       </Grid>
       <Grid container spacing={4} padding={2}>
         {

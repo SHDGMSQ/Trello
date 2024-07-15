@@ -13,7 +13,7 @@ export const Task = memo((props: TaskPropsType) => {
   const {
     changeTaskTitle,
     changeTaskStatus,
-    removeTask,
+    removeTaskHandler,
     task,
     todoEntityStatus
   } = useTask(props);
@@ -25,7 +25,7 @@ export const Task = memo((props: TaskPropsType) => {
         <Checkbox checked={task.status === TaskStatuses.Completed} onChange={changeTaskStatus} color="primary" disabled={todoEntityStatus === "loading"}/>
         <EditableSpan title={task.title} changeTitle={changeTaskTitle} disabled={todoEntityStatus === "loading"}/>
       </div>
-      <IconButton aria-label="delete" color="primary" onClick={removeTask} disabled={todoEntityStatus === "loading"}>
+      <IconButton aria-label="delete" color="primary" onClick={removeTaskHandler} disabled={todoEntityStatus === "loading"}>
         <DeleteIcon/>
       </IconButton>
     </div>
