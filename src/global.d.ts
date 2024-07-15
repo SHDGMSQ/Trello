@@ -10,6 +10,10 @@ declare module "*.module.scss" {
 declare module ".*png";
 declare module ".*jpg";
 declare module ".*jpeg";
+declare module "*.webp" {
+  const value: any;
+  export = value;
+}
 
 declare module ".*svg" {
   import React from "react";
