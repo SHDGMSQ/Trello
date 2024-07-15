@@ -1,5 +1,5 @@
 import {FormikHelpers, useFormik} from "formik";
-import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
+import {login} from "@/store/redux-toolkit/reducers/authReducer";
 import {FormValuesType} from "@/pages/Login/types";
 import {useAppDispatch, useAppSelector} from "@/store/redux-toolkit/hooks/hooks";
 
@@ -29,9 +29,9 @@ export const useLogin = () => {
           },
           onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
 
-            const action = await dispatch(loginTC(values));
+            const action = await dispatch(login(values));
 
-            if (loginTC.rejected.match(action) && action.payload.errors.length) {
+            if (login.rejected.match(action) && action.payload.errors.length) {
               formikHelpers.setFieldError("email", action.payload.errors[0]);
             }
 

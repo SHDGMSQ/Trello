@@ -13,13 +13,13 @@ import {useTodolist} from "@/components/Todolist/hooks/useTodolist";
 export const Todolist = memo((props: TodolistPropsType) => {
 
   const {
-    changeTodolistTitle,
-    removeTodolist,
+    changeTodolistTitleHandler,
+    removeTodolistHandler,
     tasksForTodolist,
     onAllClickHandler,
     onActiveClickHandler,
     onCompletedClickHandler,
-    addTask,
+    addTaskHandler,
     filter,
     id,
     title,
@@ -30,13 +30,13 @@ export const Todolist = memo((props: TodolistPropsType) => {
     <div className={styles.container}>
       <div className={styles.todoHeader}>
         <h3>
-          <EditableSpan title={title} changeTitle={changeTodolistTitle} disabled={entityStatus === "loading"}/>
+          <EditableSpan title={title} changeTitle={changeTodolistTitleHandler} disabled={entityStatus === "loading"}/>
         </h3>
-        <IconButton aria-label="delete" onClick={removeTodolist} disabled={entityStatus === "loading"}>
+        <IconButton aria-label="delete" onClick={removeTodolistHandler} disabled={entityStatus === "loading"}>
           <DeleteIcon/>
         </IconButton>
       </div>
-      <AddItemForm addItem={addTask} disabled={entityStatus === "loading"}/>
+      <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"}/>
       {
         tasksForTodolist.map((task) =>
           <Task

@@ -3,7 +3,7 @@ import {api} from "@/api/api";
 import {handleServerNetworkError} from "@/utils/errorUtils";
 import {AxiosError} from "axios";
 import {createAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {loginTC} from "@/store/redux-toolkit/reducers/authReducer";
+import {login} from "@/store/redux-toolkit/reducers/authReducer";
 
 const initialState: AppStateType = {
   status: "idle",
@@ -12,14 +12,14 @@ const initialState: AppStateType = {
 };
 
 //thunks
-export const setIsInitializedAppTC = createAsyncThunk("app/setIsInitializedApp", async (_, {
+export const setIsInitializedApp = createAsyncThunk("app/setIsInitializedApp", async (_, {
   dispatch,
   rejectWithValue
 }) => {
   try {
     const res = await api.authApi.me();
     if (res.data.resultCode === 0) {
-      dispatch(loginTC.fulfilled(undefined, "requestId", undefined));
+      dispatch(login.fulfilled(undefined, "requestId", undefined));
     } else {
       //return rejectWithValue({error: "Some initialized error"});
     }
@@ -35,17 +35,17 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setAppStatusAC: (state, action: PayloadAction<{ status: RequestAppStatusType }>) => {
+    setAppStatus: (state, action: PayloadAction<{ status: RequestAppStatusType }>) => {
       const {status} = action.payload;
       state.status = status;
     },
-    setAppErrorAC: (state, action: PayloadAction<{ error: string | null }>) => {
+    setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       const {error} = action.payload;
       state.error = error;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(setIsInitializedAppTC.fulfilled, (state) => {
+    builder.addCase(setIsInitializedApp.fulfilled, (state) => {
       state.isInitialized = true;
     });
   }
@@ -62,4 +62,4 @@ export const clearData = createAction("app/clearData", (todolists, tasks) => {
 
 export const appReducer = appSlice.reducer;
 
-export const {setAppErrorAC, setAppStatusAC} = appSlice.actions;
+export const {setAppError, setAppStatus} = appSlice.actions;
